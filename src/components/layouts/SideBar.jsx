@@ -1,6 +1,7 @@
 import React from 'react';
 import { GoArrowRight, GoHome, GoPlus, GoSearch } from "react-icons/go";
 import { LuLibrary } from "react-icons/lu";
+import SideBarPlayLists from '../SideBarPlayLists';
 
 const SideBar = () => {
 
@@ -16,7 +17,7 @@ const SideBar = () => {
                     <span>Rechercher</span>
                 </div>
             </div>
-            <div className='bg-background rounded-md p-5 flex flex-col gap-4'>
+            <div className='bg-background rounded-md p-5 flex flex-col gap-4 h-full'>
                 <div className='flex justify-between'>
                     <div className='flex gap-2'>
                         <LuLibrary size={26} className='text-white text-2xl' />
@@ -29,9 +30,8 @@ const SideBar = () => {
 
                 </div>
 
-                <div>
-                    {/* <span>Playlists</span> */}
-                    <span>Components Playlist</span>
+                <div className='bg-purple-700 h-full overflow-auto'>
+                    <SideBarPlayLists />
                 </div>
             </div>
         </div>
