@@ -19,6 +19,7 @@ const SideBar = () => {
         {title: 'Playlists', action: () => setSelectedMenu('Playlists')},
     ])
     const [showInput, setShowInput] = useState(false);
+    const [inputSearch, setInputSearch] = useState('');
 
     //close input on outside click
     const handleClickOutside = (event) => {
@@ -43,25 +44,25 @@ const SideBar = () => {
             case 'Playlists':
                 return (
                 <Suspense fallback={<div>Loading...</div>}>
-                    <SideBarPlayLists />
+                    <SideBarPlayLists inputSearch={inputSearch} />
                 </Suspense>
                 )
             case 'Albums':
                return (
                 <Suspense fallback={<div>Loading...</div>}>
-                    <SideBarAlbums/>
+                    <SideBarAlbums inputSearch={inputSearch} />
                 </Suspense>
                )
             case 'Artists':
                 return (
                     <Suspense fallback={<div>Loading...</div>}>
-                        <SideBarArtists />
+                        <SideBarArtists inputSearch={inputSearch} />
                     </Suspense>
                 )
             default:
                 return (
                 <Suspense fallback={<div>Loading...</div>}>
-                    <SideBarPlayLists />
+                    <SideBarPlayLists inputSearch={inputSearch} />
                 </Suspense>
                 )
             }
@@ -108,6 +109,8 @@ const SideBar = () => {
                                     className='outline-none bg-[#272727] pl-8 py-1 rounded-md -ml-8'
                                     type="text"
                                     placeholder="Search in library"
+                                    value={inputSearch}
+                                    onChange={(e) => setInputSearch(e.target.value)}
                                 />
                             )}
                         </div>
