@@ -71,7 +71,7 @@ const SideBar = () => {
     
 
     return (
-        <div className='sm:w-[400px] sm:min-w-[400px] w-[100px] min-w-[100px] rounded-md flex flex-col gap-2 h-full relative'>
+        <div className='sm:w-[420px] sm:min-w-[420px] w-[100px] min-w-[100px] rounded-md flex flex-col gap-2 h-full relative'>
             <div className='bg-background rounded-md p-5 flex flex-col gap-6 text-gray font-semibold '>
                 <div className='flex gap-5 items-center cursor-pointer hover:text-white transition-all'>
                     <GoHome size={26} className='text-white text-2xl' />

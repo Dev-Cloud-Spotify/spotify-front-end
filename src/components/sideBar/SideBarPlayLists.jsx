@@ -30,7 +30,6 @@ const SideBarPlayLists = ({ inputSearch }) => {
             setFilteredPlaylists(playlists);
         }
     }, [inputSearch, playlists]);
-   
 
 
     return (
@@ -40,17 +39,40 @@ const SideBarPlayLists = ({ inputSearch }) => {
                 <p className='text-gray'>Check spelling or use other keywords and try again</p>
             </div>}
             {filteredPlaylists?.map((playlist)=> (
-                <div key={playlist._id} className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a] cursor-pointer'>
-                    <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/spotify-style-illustration-album-art-2020-design-template-ff72ffd1b198e4a94ee8c58cceb1da19_screen.jpg?ts=1600257159" 
-                    className='w-12 h-12 object-cover rounded-md' alt="" />
-                    <div className='flex flex-col'>
-                       <span>{playlist.title}</span> 
-                       <span className='flex items-center gap-1 text-gray'> playlist <FaCircle size={10}/> {playlist.title}</span> 
-                    </div>
-                </div>
+                <PlaylistItem key={playlist.id} playlist={playlist} />
             ))}
         </div>
     );
 }
+
+const PlaylistItem = ({ playlist }) => {
+
+    const coverImage = () => {
+        if(!playlist.songs?.length > 0) return (
+            <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/spotify-style-illustration-album-art-2020-design-template-ff72ffd1b198e4a94ee8c58cceb1da19_screen.jpg?ts=1600257159" 
+            className='w-12 h-12 object-cover rounded-md' alt="" />
+        )
+       return (
+        <div className={`w-12 h-12 rounded-md grid ${playlist.songs.length!=1? 'grid-cols-2': ' grid-cols-1'}`}>
+        {playlist.songs.map((song) => (
+            <img key={song._id} src={song.coverImage} alt={song.title} 
+                 className={`object-cover cursor-pointer w-full h-full`} 
+             />
+        ))}
+    </div>
+       )
+    }
+
+
+    return (
+        <div className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a] cursor-pointer'>
+            {coverImage()}
+            <div className='flex flex-col'>
+               <span>{playlist.title}</span> 
+               <span className='flex items-center gap-1 text-gray'> playlist <FaCircle size={8}/> {playlist.title}</span> 
+            </div>
+        </div>
+    )
+};
 
 export default SideBarPlayLists;
