@@ -71,31 +71,37 @@ const SideBar = () => {
     
 
     return (
-        <div className='sm:w-[400px] sm:min-w-[400px] w-[100px] min-w-[100px] rounded-md flex flex-col gap-2 h-full'>
-            <div className='bg-background rounded-md p-5 flex flex-col gap-6 text-gray font-semibold'>
-                <div className='flex gap-5 items-center cursor-pointer hover:text-white'>
+        <div className='sm:w-[400px] sm:min-w-[400px] w-[100px] min-w-[100px] rounded-md flex flex-col gap-2 h-full relative'>
+            <div className='bg-background rounded-md p-5 flex flex-col gap-6 text-gray font-semibold '>
+                <div className='flex gap-5 items-center cursor-pointer hover:text-white transition-all'>
                     <GoHome size={26} className='text-white text-2xl' />
                     <span>Home</span>
                 </div>
-                <div className='flex gap-5 items-center hover:text-white cursor-pointer'>
+                <div className='flex gap-5 items-center hover:text-white cursor-pointer transition-all'>
                     <GoSearch size={26} className='text-white text-2xl' />
                     <span>Search</span>
                 </div>
             </div>
             <div className='bg-background rounded-md p-5 flex flex-col gap-4 h-full overflow-hidden'>
                 <div className='flex justify-between text-gray font-semibold'>
-                    <div className='flex gap-2 cursor-pointer hover:text-white'>
+                    <div className='flex gap-2 cursor-pointer hover:text-white transition-all'>
                         <LuLibrary size={26} className='text-2xl' />
                         <span>Library</span>
                     </div>
                     <div className='flex gap-1'>
-                        <div className="relative overflow-visible group cursor-pointer">
-                            <div className="flex text-sm absolute -left-10 -top-10 whitespace-nowrap bg-[#272727] rounded-md text-white px-2 py-1 shadow-xl opacity-0 group-hover:opacity-95 delay-500 transition-all">
-                                Create a playlist
+                        <div className=" group cursor-pointer">
+                            <div className="flex text-sm absolute z-50 right-6 top-24 whitespace-nowrap bg-[#272727] rounded-md text-white px-2 py-1 shadow-xl opacity-0 group-hover:opacity-95 delay-500 transition-all">
+                                Create a playlist   
                             </div>
                             <GoPlus size={40} className='text-2xl hover:rounded-full hover:bg-[#272727] p-2' />
                         </div>
-                        <GoArrowRight size={40} className='text-2xl hover:rounded-full hover:bg-[#272727] p-2' />
+                        <div className=" group cursor-pointer">
+                            <div className="flex text-sm absolute z-50 -right-2 top-24 whitespace-nowrap bg-[#272727] rounded-md text-white px-2 py-1 shadow-xl opacity-0 group-hover:opacity-95 delay-500 transition-all">
+                               Show more
+                            </div>
+                            <GoArrowRight size={40} className='text-2xl hover:rounded-full hover:bg-[#272727] p-2' />
+
+                        </div>
                     </div>
                 </div>
 
