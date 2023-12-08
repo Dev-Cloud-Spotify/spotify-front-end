@@ -1,7 +1,5 @@
 import artistsAPI from '@/apis/artists.api';
-import playlistsAPI from '@/apis/playLists.api';
 import React, { useEffect, useState } from 'react';
-import { FaCircle } from 'react-icons/fa';
 
 const SideBarArtists = ({ inputSearch }) => {
     const [artists, setArtists] = useState([]);
@@ -39,7 +37,7 @@ const SideBarArtists = ({ inputSearch }) => {
                 <p className='text-gray'>Check spelling or use other keywords and try again</p>
             </div>}
             {filteredArtists?.map((artist)=> (
-                <div key={artist._id} className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a]'>
+                <div key={artist._id} className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a] cursor-pointer'>
                     <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/spotify-style-illustration-album-art-2020-design-template-ff72ffd1b198e4a94ee8c58cceb1da19_screen.jpg?ts=1600257159" 
                     className='w-12 h-12 object-cover rounded-full' alt="" />
                     <div className='flex flex-col'>

@@ -41,7 +41,7 @@ const SideBarPlayLists = ({ inputSearch }) => {
                 <p className='text-gray'>Check spelling or use other keywords and try again</p>
             </div>}
             {filteredAlbums?.map((album)=> (
-                <div key={album._id} className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a]'>
+                <div key={album._id} className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a] cursor-pointer'>
                     <img src={album.coverImage}
                     className='w-12 h-12 object-cover rounded-md' alt="" />
                     <div className='flex flex-col'>
