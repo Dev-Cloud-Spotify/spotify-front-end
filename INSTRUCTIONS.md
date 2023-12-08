@@ -1,6 +1,6 @@
 1. Accédez au musique du projet dev cloud
     1. pas de connexion necessaire
-    2. Presentation similaire a :
+    2. Presentation similaire a Spotify:
         
         
     3. Afficher les derniers sons, artistes et albums de la sorte (1 ligne par type) [Défilement horizontale jusqu’a 10 élèments]

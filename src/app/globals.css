@@ -24,4 +24,26 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+    /* font-family: CircularSp,CircularSp-Arab,CircularSp-Hebr,CircularSp-Cyrl,CircularSp-Grek,CircularSp-Deva,var(--fallback-fonts,sans-serif),sans-serif; */
+    font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, sans-serif;
+}
+
+/* Style the track (background) of the scrollbar */
+::-webkit-scrollbar {
+  background-color: transparent; /* No background color */
+  width: 10px; /* Set the width of the scrollbar */
+}
+
+/* Style the thumb (the draggable part) of the scrollbar */
+::-webkit-scrollbar-thumb {
+  background-color: gray; /* Color of the thumb */
+}
+
+body {
+  scrollbar-width: auto;
+  scrollbar-color: gray transparent;
+}
+
+body:hover {
+  scrollbar-width: thin;
 }

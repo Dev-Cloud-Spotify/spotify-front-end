@@ -1,12 +1,11 @@
 //Spotify Context
 'use client';
 import React, { useState, useEffect, createContext, useContext } from "react";
-import axios from "axios";
 
 export const SpotifyContext = createContext();
 
 export const SpotifyProvider = ({ children }) => {
-    const [test, setTest] = useState("test");
+    const [test, setTest] = useState("test value");
 
     const [playlists, setPlaylists] = useState([]);
     const [playlist, setPlaylist] = useState({});
