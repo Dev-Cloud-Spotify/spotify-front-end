@@ -67,8 +67,8 @@ const MediaPlayer = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="w-full min-h-[100px] bg-pink-600 flex justify-center items-center space-x-4">
+    <div className="bg-blue-800 justify-center max-h-full flex flex-col items-center">
+      <div className="w-full flex justify-center items-center space-x-4">
         <FaRandom />
         <IoPlaySkipBackSharp size={20} />
         {isPlaying ? (
@@ -86,8 +86,8 @@ const MediaPlayer = () => {
         <div>
           <h2>{formatTime(audioRef.current.duration)}</h2>
         </div>
-      </div>
 
+      </div>
       <input
         type="range"
         value={audioRef.current.currentTime}

@@ -12,7 +12,7 @@ export default function Home() {
         <MainWrapper />
       </div>
 
-      <div className="">
+      <div className="max-h-[8%]">
         <MediaPlayer />
       </div>
       
