@@ -19,6 +19,7 @@ const SideBar = () => {
         {title: 'Playlists', action: () => setSelectedMenu('Playlists')},
     ])
     const [showInput, setShowInput] = useState(false);
+    const [inputSearch, setInputSearch] = useState('');
 
     //close input on outside click
     const handleClickOutside = (event) => {
@@ -43,25 +44,25 @@ const SideBar = () => {
             case 'Playlists':
                 return (
                 <Suspense fallback={<div>Loading...</div>}>
-                    <SideBarPlayLists />
+                    <SideBarPlayLists inputSearch={inputSearch} />
                 </Suspense>
                 )
             case 'Albums':
                return (
                 <Suspense fallback={<div>Loading...</div>}>
-                    <SideBarAlbums/>
+                    <SideBarAlbums inputSearch={inputSearch} />
                 </Suspense>
                )
             case 'Artists':
                 return (
                     <Suspense fallback={<div>Loading...</div>}>
-                        <SideBarArtists />
+                        <SideBarArtists inputSearch={inputSearch} />
                     </Suspense>
                 )
             default:
                 return (
                 <Suspense fallback={<div>Loading...</div>}>
-                    <SideBarPlayLists />
+                    <SideBarPlayLists inputSearch={inputSearch} />
                 </Suspense>
                 )
             }
@@ -72,24 +73,29 @@ const SideBar = () => {
     return (
         <div className='sm:w-[400px] sm:min-w-[400px] w-[100px] min-w-[100px] rounded-md flex flex-col gap-2 h-full'>
             <div className='bg-background rounded-md p-5 flex flex-col gap-6 text-gray font-semibold'>
-                <div className='flex gap-5 items-center'>
+                <div className='flex gap-5 items-center cursor-pointer hover:text-white'>
                     <GoHome size={26} className='text-white text-2xl' />
                     <span>Home</span>
                 </div>
-                <div className='flex gap-5 items-center'>
+                <div className='flex gap-5 items-center hover:text-white cursor-pointer'>
                     <GoSearch size={26} className='text-white text-2xl' />
                     <span>Search</span>
                 </div>
             </div>
             <div className='bg-background rounded-md p-5 flex flex-col gap-4 h-full overflow-hidden'>
                 <div className='flex justify-between text-gray font-semibold'>
-                    <div className='flex gap-2'>
+                    <div className='flex gap-2 cursor-pointer hover:text-white'>
                         <LuLibrary size={26} className='text-2xl' />
                         <span>Library</span>
                     </div>
-                    <div className='flex gap-4'>
-                        <GoPlus size={26} className='text-2xl' />
-                        <GoArrowRight size={26} className='text-2xl' />
+                    <div className='flex gap-1'>
+                        <div className="relative overflow-visible group cursor-pointer">
+                            <div className="flex text-sm absolute -left-10 -top-10 whitespace-nowrap bg-[#272727] rounded-md text-white px-2 py-1 shadow-xl opacity-0 group-hover:opacity-95 delay-500 transition-all">
+                                Create a playlist
+                            </div>
+                            <GoPlus size={40} className='text-2xl hover:rounded-full hover:bg-[#272727] p-2' />
+                        </div>
+                        <GoArrowRight size={40} className='text-2xl hover:rounded-full hover:bg-[#272727] p-2' />
                     </div>
                 </div>
 
@@ -108,6 +114,8 @@ const SideBar = () => {
                                     className='outline-none bg-[#272727] pl-8 py-1 rounded-md -ml-8'
                                     type="text"
                                     placeholder="Search in library"
+                                    value={inputSearch}
+                                    onChange={(e) => setInputSearch(e.target.value)}
                                 />
                             )}
                         </div>
