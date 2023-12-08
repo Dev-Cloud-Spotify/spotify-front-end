@@ -30,6 +30,11 @@ const SideBarArtists = ({ inputSearch }) => {
         }
     }, [inputSearch, artists]);
 
+    const getRandomImage = () => {
+        const random = Math.floor(Math.random() * 60);
+        return `https://i.pravatar.cc/45?img=${random}`;
+    }
+
     return (
         <div className='h-[92%] overflow-auto'>
             {filteredArtists.length === 0 && <div className='text-center h-full flex flex-col justify-center'>
@@ -38,7 +43,7 @@ const SideBarArtists = ({ inputSearch }) => {
             </div>}
             {filteredArtists?.map((artist)=> (
                 <div key={artist._id} className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a] cursor-pointer'>
-                    <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/spotify-style-illustration-album-art-2020-design-template-ff72ffd1b198e4a94ee8c58cceb1da19_screen.jpg?ts=1600257159" 
+                    <img src={artist.artistImage || getRandomImage()} 
                     className='w-12 h-12 object-cover rounded-full' alt="" />
                     <div className='flex flex-col'>
                        <span className='first-letter:uppercase font-bold'>{artist.name} {artist.lastName} </span> 
