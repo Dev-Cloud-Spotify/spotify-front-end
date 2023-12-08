@@ -6,13 +6,13 @@ import SideBar from "@/components/layouts/SideBar";
 
 export default function Home() {
   return (
-    <main className='w-screen h-screen flex flex-col gap-1 p-2'>
-      <div className="flex gap-2 h-[85%] w-full pb-1">
+    <main className='w-screen h-[100vh] flex flex-col gap-1 p-2'>
+      <div className="flex gap-2 h-[92%] w-full pb-1">
         <SideBar />
         <MainWrapper />
       </div>
 
-      <div className="h-[15%]">
+      <div className="">
         <MediaPlayer />
       </div>
       
