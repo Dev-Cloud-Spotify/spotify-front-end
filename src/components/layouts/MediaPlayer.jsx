@@ -23,13 +23,11 @@ const MediaPlayer = () => {
     const handleTimeUpdate = () => {
       setCurrentAudioTime(audio.currentTime);
     };
-
-    // Set up event listeners
-    audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
-
-    // Clean up event listeners when the component unmounts
+    const intervalId = setInterval(() => {
+      handleTimeUpdate();
+    }, 1000);
     return () => {
-      audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+      clearInterval(intervalId);
     };
   }, []);
 
@@ -44,16 +42,14 @@ const MediaPlayer = () => {
     }
 
     if (isPlaying && currentAudioTime >= audio.duration) {
-      setCurrentAudioTime(0); // Reset time to beginning
-      setIsPlaying(false); // Pause when the end is reached
+      setCurrentAudioTime(0);
+      setIsPlaying(false);
     }
 
     console.log('audio arreté à la seconde: ', audio.currentTime);
     console.log('l audio dure: ', audio.duration);
-    setCurrentAudioTime(audio.currentTime);
-
-    // No need to pause here, as it's handled above
-  }, [isPlaying, currentAudioTime]);
+    //setCurrentAudioTime(audio.currentTime); //LA CAUSE DU PROBLEME DE PERFORMANCE
+  }, [isPlaying, audioRef.current.currentTime]);
 
   const formatTime = (timeInSeconds) => {
     const hours = Math.floor(timeInSeconds / 3600);
@@ -68,7 +64,7 @@ const MediaPlayer = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="w-full min-h-[100px] bg-pink-600 flex justify-center items-center space-x-4">
+      <div className="w-full min-h-[100px] bg-black flex justify-center items-center space-x-4">
         <FaRandom />
         <IoPlaySkipBackSharp size={20} />
         {isPlaying ? (
@@ -93,7 +89,7 @@ const MediaPlayer = () => {
         value={audioRef.current.currentTime}
         min="0"
         max={audioRef.current.duration}
-        step="1"
+        // step="1"
         onChange={(e) => {
           const newTime = parseFloat(e.target.value);
           setCurrentAudioTime(newTime);
