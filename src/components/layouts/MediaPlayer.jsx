@@ -63,8 +63,8 @@ const MediaPlayer = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="w-full min-h-[100px] bg-black flex justify-center items-center space-x-4">
+    <div className="bg-blue-800 justify-center max-h-full flex flex-col items-center">
+      <div className="w-full flex justify-center items-center space-x-4">
         <FaRandom />
         <IoPlaySkipBackSharp size={20} />
         {isPlaying ? (
@@ -73,7 +73,7 @@ const MediaPlayer = () => {
           <FaCirclePlay size={40} onClick={handlePlayPause} />
         )}
         <IoPlaySkipForward size={20} />
-        <TfiLoop color="green" />
+        <TfiLoop color="white" />
       </div>
       <div className="flex justify-between w-full">
         <div>
@@ -83,7 +83,6 @@ const MediaPlayer = () => {
           <h2>{formatTime(audioRef.current.duration)}</h2>
         </div>
       </div>
-
       <input
         type="range"
         value={audioRef.current.currentTime}
