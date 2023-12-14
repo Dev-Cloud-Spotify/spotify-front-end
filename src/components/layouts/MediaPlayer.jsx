@@ -32,6 +32,7 @@ const [selectedTrackTitle, setSelectedTrackTitle] = useState(
 
 useEffect(() => {
   console.log('track.CFurl', track.CFurl)
+  if(!track.CFurl) return;
   const audio = audioRef.current;
 
   // Pause the current track
@@ -46,11 +47,6 @@ useEffect(() => {
   audioRef.current.src = track.CFurl;
   audioRef.current.load();
   
-  // Play the new track if it was playing before
-  // if (isPlaying) {
-  //   audioRef.current.play();
-  //   setIsPlaying(true);
-  // }
   setIsPlaying(true);
 
 }, [track.CFurl]);
@@ -63,12 +59,14 @@ useEffect(() => {
 useEffect(() => {
   const getsongsAPI = async () => {
     try {
-      const myResponse = await songsAPI.getSongs().then((response) => {
+      const myResponse = await songsAPI.getSongs()
+      .then((response) => {
         return response;
       });
       setTracks(myResponse);
       //set the first to be mounted right after the fetch is completed to avoid that fucking undefined error
       setSelectedTrackCFurl(myResponse[0]?.CFurl);
+      setTracks(myResponse[0]?.CFurl)
     } catch (error) {
       console.error(error);
     }
