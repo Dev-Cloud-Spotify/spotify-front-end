@@ -10,13 +10,13 @@ import PlayingSong from '../PlayingSong';
 import AudioSettings from '../AudioSettings';
 
 import songsAPI from '@/apis/songs.api';
+import { useSpotifyContext } from '@/context/SpotifyContext';
 
 
 const MediaPlayer = () => {
 
-  const iconStyle =
-  'text-white hover:text-blue-500 cursor-pointer transition duration-300 transform hover:scale-110';
-const [tracks, setTracks] = useState([]);
+  const { track, volume, tracks, setTracks, audioRef} = useSpotifyContext();
+// const [tracks, setTracks] = useState([]);
 const [isHovered, setIsHovered] = useState(false);
 const [isShuffling, setIsShuffling] = useState(false);
 const [isLooping, setIsLooping] = useState(false);
@@ -28,11 +28,35 @@ const [selectedTrackCFurl, setSelectedTrackCFurl] = useState(
 const [selectedTrackTitle, setSelectedTrackTitle] = useState(
   tracks[0]?.title
 );
-const audioRef = useRef(new Audio());
-const [volume, setVolume] = useState(1);
+
 
 useEffect(() => {
-  audioRef.current = new Audio(selectedTrackCFurl || '');
+  console.log('track.CFurl', track.CFurl)
+  const audio = audioRef.current;
+
+  // Pause the current track
+  setIsPlaying(false);
+  if (audio){
+    audio.pause();
+  }
+  
+  // Set the new track
+  setSelectedTrackCFurl(track.CFurl);
+  setSelectedTrackTitle(track.title);
+  audioRef.current.src = track.CFurl;
+  audioRef.current.load();
+  
+  // Play the new track if it was playing before
+  // if (isPlaying) {
+  //   audioRef.current.play();
+  //   setIsPlaying(true);
+  // }
+  setIsPlaying(true);
+
+}, [track.CFurl]);
+
+useEffect(() => {
+  audioRef.current.src = selectedTrackCFurl || '';
   console.log('audioRef.current', audioRef.current);
 }, [selectedTrackCFurl]);
 
@@ -65,14 +89,14 @@ const handleNext = () => {
   const nextIndex = (currentIndex + 1) % tracks.length;
   setSelectedTrackCFurl(tracks[nextIndex]?.CFurl);
   setSelectedTrackTitle(tracks[nextIndex]?.title);
-  // setSlectedTrackCoverImage(tracks[nextIndex].coverImage);
+  
 
   audioRef.current.pause();
 };
 
 useEffect(() => {
-  console.log('selectedTrackCFurl', selectedTrackCFurl);
-}, [selectedTrackCFurl]);
+  console.log('selectedTrackCFurl', track);
+}, [track]);
 
 const handlePrevious = () => {
   const currentIndex = tracks.findIndex(
@@ -150,17 +174,7 @@ const randomTrack = () => {
   audioRef.current.pause();
 };
 
-const handleVolumeChange = (e) => {
-  const newVolume = parseFloat(e.target.value);
-  setVolume(newVolume);
-  audioRef.current.volume = newVolume;
-};
-const handleMuteToggle = () => {
-  // Toggle between muting and unmuting
-  const newVolume = audioRef.current.volume === 0 ? 1 : 0;
-  setVolume(newVolume);
-  audioRef.current.volume = newVolume;
-};
+
 
   const calculateGradient = () => {
     const formattedTime = formatTime(audioRef.current.currentTime);
