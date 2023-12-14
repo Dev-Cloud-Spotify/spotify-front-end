@@ -1,15 +1,19 @@
-import { FaPlay, FaPause, FaList } from 'react-icons/fa';
+import { useState, useEffect, useRef } from 'react';
+
 import { FaCirclePlay } from 'react-icons/fa6';
 import { IoPlaySkipForward, IoPlaySkipBackSharp } from 'react-icons/io5';
-import { FaRandom } from 'react-icons/fa';
-import { TfiLoop } from 'react-icons/tfi';
+import { PiShuffleFill } from "react-icons/pi";
 import { FaPauseCircle } from 'react-icons/fa';
-import { useState, useEffect, useRef } from 'react';
+import { SlLoop } from "react-icons/sl";
+import PlayingSong from '../PlayingSong';
+import AudioSettings from '../AudioSettings';
 
 const MediaPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentAudioTime, setCurrentAudioTime] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isLooping, setIsLooping] = useState(false);
+  const [isShuffling, setIsShuffling] = useState(false);
   const audio = new Audio('https://d2ykmt6l7yk0wq.cloudfront.net/On trace la route.m4a');
   const audioRef = useRef(audio);
 
@@ -71,21 +75,26 @@ const MediaPlayer = () => {
   };
 
   return (
-    <div className="justify-center max-h-full flex flex-col gap-2 items-center">
+    <div className='max-h-full flex items-center justify-between'>
+      <div className='h-full w-1/3 flex justify-start pl-2'>
+        <PlayingSong />
+      </div>
+
+    <div className="justify-center  flex flex-col gap-2 items-center">
       <div className="w-full flex justify-center items-center mt-2 gap-5">
-        <FaRandom />
-        <IoPlaySkipBackSharp size={20} />
+        <PiShuffleFill size={20} onClick={()=>setIsShuffling(!isShuffling)} className={`cursor-pointer hover:scale-105 ${isShuffling && 'text-primary'}`} />
+        <IoPlaySkipBackSharp className='cursor-pointer hover:scale-105' size={20} onClick={()=> (console.log('click'))} />
         {isPlaying ? (
-          <FaPauseCircle size={36} onClick={handlePlayPause} />
+          <FaPauseCircle className='cursor-pointer hover:scale-105' size={32} onClick={handlePlayPause} />
         ) : (
-          <FaCirclePlay size={36} onClick={handlePlayPause} />
+          <FaCirclePlay className='cursor-pointer hover:scale-105' size={32} onClick={handlePlayPause} />
         )}
-        <IoPlaySkipForward size={20} />
-        <TfiLoop color="white" />
+        <IoPlaySkipForward className='cursor-pointer hover:scale-105' size={20} onClick={()=> (console.log('click'))} />
+        <SlLoop className={`cursor-pointer hover:scale-105 ${isLooping && 'text-primary'}`} onClick={()=> setIsLooping(!isLooping)} />
       </div>
 
       <div className="flex justify-center gap-2 items-center">
-        <span className="text-sm">{formatTime(audioRef.current.currentTime)}</span>
+        <span className="text-xs text[#a7a7a7]">{formatTime(audioRef.current.currentTime)}</span>
         <input
           type="range"
           value={audioRef.current.currentTime}
@@ -102,11 +111,18 @@ const MediaPlayer = () => {
           }}
           onMouseOver={() => setIsHovered(true)}
           onMouseOut={() => setIsHovered(false)}
-          className="w-[680px] transition-all"
+          className="w-[620px] transition-all"
         />
-        <span className="text-sm">{formatTime(audioRef.current.duration)}</span>
+        <span className="text-xs text[#a7a7a7]">{formatTime(audioRef.current.duration)}</span>
       </div>
     </div>
+
+    <div className=' h-full w-1/3 flex justify-end pr-2'>
+      <AudioSettings />
+    </div>
+
+    </div>
+
   );
 };
 
