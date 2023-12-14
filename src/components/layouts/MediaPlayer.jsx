@@ -5,63 +5,162 @@ import { IoPlaySkipForward, IoPlaySkipBackSharp } from 'react-icons/io5';
 import { PiShuffleFill } from "react-icons/pi";
 import { FaPauseCircle } from 'react-icons/fa';
 import { SlLoop } from "react-icons/sl";
+
 import PlayingSong from '../PlayingSong';
 import AudioSettings from '../AudioSettings';
 
+import songsAPI from '@/apis/songs.api';
+
+
 const MediaPlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentAudioTime, setCurrentAudioTime] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isLooping, setIsLooping] = useState(false);
-  const [isShuffling, setIsShuffling] = useState(false);
-  const audio = new Audio('https://d2ykmt6l7yk0wq.cloudfront.net/On trace la route.m4a');
-  const audioRef = useRef(audio);
 
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
+  const iconStyle =
+  'text-white hover:text-blue-500 cursor-pointer transition duration-300 transform hover:scale-110';
+const [tracks, setTracks] = useState([]);
+const [isHovered, setIsHovered] = useState(false);
+const [isShuffling, setIsShuffling] = useState(false);
+const [isLooping, setIsLooping] = useState(false);
+const [isPlaying, setIsPlaying] = useState(false); 
+const [currentAudioTime, setCurrentAudioTime] = useState(0);
+const [selectedTrackCFurl, setSelectedTrackCFurl] = useState(
+  tracks[0]?.CFurl
+);
+const [selectedTrackTitle, setSelectedTrackTitle] = useState(
+  tracks[0]?.title
+);
+const audioRef = useRef(new Audio());
+const [volume, setVolume] = useState(1);
+
+useEffect(() => {
+  audioRef.current = new Audio(selectedTrackCFurl || '');
+  console.log('audioRef.current', audioRef.current);
+}, [selectedTrackCFurl]);
+
+useEffect(() => {
+  const getsongsAPI = async () => {
+    try {
+      const myResponse = await songsAPI.getSongs().then((response) => {
+        return response;
+      });
+      setTracks(myResponse);
+      //set the first to be mounted right after the fetch is completed to avoid that fucking undefined error
+      setSelectedTrackCFurl(myResponse[0]?.CFurl);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  getsongsAPI();
+}, []);
+
+
+const handlePlayPause = () => {
+  setIsPlaying(!isPlaying);
+  setCurrentAudioTime(0);
+};
+
+const handleNext = () => {
+  const currentIndex = tracks.findIndex(
+    (track) => track.CFurl === selectedTrackCFurl
+  );
+  const nextIndex = (currentIndex + 1) % tracks.length;
+  setSelectedTrackCFurl(tracks[nextIndex]?.CFurl);
+  setSelectedTrackTitle(tracks[nextIndex]?.title);
+  // setSlectedTrackCoverImage(tracks[nextIndex].coverImage);
+
+  audioRef.current.pause();
+};
+
+useEffect(() => {
+  console.log('selectedTrackCFurl', selectedTrackCFurl);
+}, [selectedTrackCFurl]);
+
+const handlePrevious = () => {
+  const currentIndex = tracks.findIndex(
+    (track) => track.CFurl === selectedTrackCFurl
+  );
+  // Calculate the previous index, considering the possibility of negative values
+  const previousIndex = (currentIndex - 1 + tracks.length) % tracks.length;
+  setSelectedTrackCFurl(tracks[previousIndex]?.CFurl);
+  setSelectedTrackTitle(tracks[previousIndex]?.title);
+  audioRef.current.pause();
+};
+
+useEffect(() => {
+  //const audio = audioRef.current;
+  const handleTimeUpdate = () => {
+    setCurrentAudioTime(audioRef.current.currentTime);
+  };
+  const intervalId = setInterval(() => {
+    handleTimeUpdate();
+  }, 1000);
+  return () => {
+    clearInterval(intervalId);
+  };
+}, []);
+
+useEffect(() => {
+  const handleKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      handlePlayPause();
+    }
   };
 
-  useEffect(() => {
-    const audio = audioRef.current;
+  document.addEventListener('keyup', handleKeyUp);
 
-    const handleTimeUpdate = () => {
-      setCurrentAudioTime(audio.currentTime);
-    };
-
-    const intervalId = setInterval(() => {
-      handleTimeUpdate();
-    }, 1000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-
-    if (isPlaying) {
-      audioRef.current.play();
-    } else {
-      audioRef.current.pause();
-    }
-
-    if (isPlaying && currentAudioTime >= audio.duration) {
-      setCurrentAudioTime(0);
-      setIsPlaying(false);
-    }
-  }, [isPlaying, audioRef.current.currentTime]);
-
-  const formatTime = (timeInSeconds) => {
-    if (!timeInSeconds) {
-      return '0:00';
-    }
-
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = Math.floor(timeInSeconds % 60);
-
-    return `${minutes}:${String(seconds).padStart(2, '0')}`;
+  return () => {
+    // Cleanup the event listener when the component unmounts
+    document.removeEventListener('keyup', handleKeyUp);
   };
+}, [handlePlayPause]);
+
+//console.log('la state tracks', tracks[0]?.title);
+
+useEffect(() => {
+  const audio = audioRef.current;
+
+  if (isPlaying) {
+    audioRef.current.play();
+    //console.log(audioRef.current.currentTime, 'currentAudioTime');
+  } else {
+    audioRef.current.pause();
+  }
+
+  if (isPlaying && currentAudioTime >= audio.duration) {
+    setCurrentAudioTime(0);
+    setIsPlaying(false);
+  }
+
+}, [isPlaying, audioRef.current.currentTime]);
+
+const formatTime = (timeInSeconds) => {
+  if (!timeInSeconds) {
+    return '0:00';
+  }
+
+  const minutes = Math.floor(timeInSeconds / 60);
+  const seconds = Math.floor(timeInSeconds % 60);
+
+  return `${minutes}:${String(seconds).padStart(2, '0')}`;
+};
+
+const randomTrack = () => {
+  const randomIndex = Math.floor(Math.random() * tracks.length);
+  setSelectedTrackCFurl(tracks[randomIndex]?.CFurl);
+  setSelectedTrackTitle(tracks[randomIndex]?.title);
+  audioRef.current.pause();
+};
+
+const handleVolumeChange = (e) => {
+  const newVolume = parseFloat(e.target.value);
+  setVolume(newVolume);
+  audioRef.current.volume = newVolume;
+};
+const handleMuteToggle = () => {
+  // Toggle between muting and unmuting
+  const newVolume = audioRef.current.volume === 0 ? 1 : 0;
+  setVolume(newVolume);
+  audioRef.current.volume = newVolume;
+};
 
   const calculateGradient = () => {
     const formattedTime = formatTime(audioRef.current.currentTime);
@@ -83,13 +182,13 @@ const MediaPlayer = () => {
     <div className="justify-center  flex flex-col gap-2 items-center">
       <div className="w-full flex justify-center items-center mt-2 gap-5">
         <PiShuffleFill size={20} onClick={()=>setIsShuffling(!isShuffling)} className={`cursor-pointer hover:scale-105 ${isShuffling && 'text-primary'}`} />
-        <IoPlaySkipBackSharp className='cursor-pointer hover:scale-105' size={20} onClick={()=> (console.log('click'))} />
+        <IoPlaySkipBackSharp className='cursor-pointer hover:scale-105' size={20} onClick={handlePrevious} />
         {isPlaying ? (
           <FaPauseCircle className='cursor-pointer hover:scale-105' size={32} onClick={handlePlayPause} />
         ) : (
           <FaCirclePlay className='cursor-pointer hover:scale-105' size={32} onClick={handlePlayPause} />
         )}
-        <IoPlaySkipForward className='cursor-pointer hover:scale-105' size={20} onClick={()=> (console.log('click'))} />
+        <IoPlaySkipForward className='cursor-pointer hover:scale-105' size={20} onClick={handleNext} />
         <SlLoop className={`cursor-pointer hover:scale-105 ${isLooping && 'text-primary'}`} onClick={()=> setIsLooping(!isLooping)} />
       </div>
 
