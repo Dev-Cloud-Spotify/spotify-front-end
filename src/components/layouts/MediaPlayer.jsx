@@ -1,7 +1,6 @@
 import { FaPlay, FaPause, FaList } from 'react-icons/fa';
 import { FaCirclePlay } from 'react-icons/fa6';
-import { IoPlaySkipForward } from 'react-icons/io5';
-import { IoPlaySkipBackSharp } from 'react-icons/io5';
+import { IoPlaySkipForward, IoPlaySkipBackSharp } from 'react-icons/io5';
 import { FaRandom } from 'react-icons/fa';
 import { TfiLoop } from 'react-icons/tfi';
 import { FaPauseCircle } from 'react-icons/fa';
@@ -11,8 +10,9 @@ const MediaPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentAudioTime, setCurrentAudioTime] = useState(0);
   const audioRef = useRef(
-    new Audio('https://d2ykmt6l7yk0wq.cloudfront.net/10secondsTEST.m4a')
+    new Audio('https://d2ykmt6l7yk0wq.cloudfront.net/On trace la route.m4a')
   );
+  const [selectedTrack, setSelectedTrack] = useState(null);
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -23,13 +23,11 @@ const MediaPlayer = () => {
     const handleTimeUpdate = () => {
       setCurrentAudioTime(audio.currentTime);
     };
-
-    // Set up event listeners
-    audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
-
-    // Clean up event listeners when the component unmounts
+    const intervalId = setInterval(() => {
+      handleTimeUpdate();
+    }, 1000);
     return () => {
-      audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+      clearInterval(intervalId);
     };
   }, []);
 
@@ -44,16 +42,14 @@ const MediaPlayer = () => {
     }
 
     if (isPlaying && currentAudioTime >= audio.duration) {
-      setCurrentAudioTime(0); // Reset time to beginning
-      setIsPlaying(false); // Pause when the end is reached
+      setCurrentAudioTime(0);
+      setIsPlaying(false);
     }
 
     console.log('audio arreté à la seconde: ', audio.currentTime);
     console.log('l audio dure: ', audio.duration);
-    setCurrentAudioTime(audio.currentTime);
-
-    // No need to pause here, as it's handled above
-  }, [isPlaying, currentAudioTime]);
+    //setCurrentAudioTime(audio.currentTime); //LA CAUSE DU PROBLEME DE PERFORMANCE
+  }, [isPlaying, audioRef.current.currentTime]);
 
   const formatTime = (timeInSeconds) => {
     const hours = Math.floor(timeInSeconds / 3600);
@@ -77,7 +73,7 @@ const MediaPlayer = () => {
           <FaCirclePlay size={40} onClick={handlePlayPause} />
         )}
         <IoPlaySkipForward size={20} />
-        <TfiLoop color="green" />
+        <TfiLoop color="white" />
       </div>
       <div className="flex justify-between w-full">
         <div>
@@ -86,14 +82,13 @@ const MediaPlayer = () => {
         <div>
           <h2>{formatTime(audioRef.current.duration)}</h2>
         </div>
-
       </div>
       <input
         type="range"
         value={audioRef.current.currentTime}
         min="0"
         max={audioRef.current.duration}
-        step="1"
+        // step="1"
         onChange={(e) => {
           const newTime = parseFloat(e.target.value);
           setCurrentAudioTime(newTime);
