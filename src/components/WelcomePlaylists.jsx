@@ -1,8 +1,10 @@
 import playlistsAPI from '@/apis/playLists.api';
 import songsAPI from '@/apis/songs.api';
 import { useSpotifyContext } from '@/context/SpotifyContext';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { FaPauseCircle, FaPlayCircle } from 'react-icons/fa';
+import { IconPlay } from './utils/Elements';
 
 const WelcomePlaylists = () => {
 
@@ -26,7 +28,7 @@ const WelcomePlaylists = () => {
     
     return (
       <div className='p-6 w-full h-full'>
-        <span className='text-3xl font-semibold'>Bonjour</span>
+        <span className='text-3xl font-bold'>Bonjour</span>
         <div className='grid grid-cols-3 gap-2 items-center justify-center pt-4'>
           {playlists.map((playlist, index) => (
             <PlaylistItem key={`${playlist._id}-${index}`} playlist={playlist} />
@@ -37,7 +39,9 @@ const WelcomePlaylists = () => {
 }
 
 const PlaylistItem = ({ playlist }) => {
+
   const { playList, setPlayList, isPlaying, setIsPlaying } = useSpotifyContext();
+  const router = useRouter();
 
   const coverImage = () => {
     if (!playlist.songs?.length > 0)
@@ -84,22 +88,19 @@ const PlaylistItem = ({ playlist }) => {
   }
 
   return (
-    <div className='flex relative gap-2 items-center bg-[#595959] bg-opacity-40 hover:bg-opacity-60 rounded-md cursor-pointer group'>
+    <div className='flex relative gap-2 items-center bg-[#595959] bg-opacity-40 hover:bg-opacity-60 rounded-md cursor-pointer group'
+    onClick={() => router.push(`/playlist/${playlist._id}`)}>
         <div>
           {coverImage()}
         </div>
         <span className='font-semibold'>{playlist.title} </span>
-        {isPlaying && playList._id === playlist._id ? (
-            <FaPauseCircle size={44}
-              className='absolute right-2 text-primary bg-black rounded-full cursor-pointer opacity-95 transition-all duration-300 hover:scale-105'
-              onClick={handlePause}
-            />
-        ) : (
-            <FaPlayCircle size={44}
-              className='absolute right-2 bottom-2 text-primary bg-black rounded-full opacity-0 transform cursor-pointer group-hover:opacity-95 group-hover:translate-y-0 transition-all duration-300 hover:scale-105'
-              onClick={handlePlay}
-            />
-        )}
+        <IconPlay 
+          playlist={playlist} 
+          size={44} 
+          pauseStyle={'opacity-95 transition-all duration-300 absolute right-2'} 
+          playStyle={'opacity-0 transform cursor-pointer group-hover:opacity-95 group-hover:translate-y-0 transition-all duration-300 absolute right-2'}
+        />
+        
         
     </div>
   );
