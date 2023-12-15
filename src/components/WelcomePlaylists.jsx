@@ -14,12 +14,15 @@ const WelcomePlaylists = () => {
     const fetchSongs = () => {
         songsAPI.getSongs()
         .then((response) => {
-            console.log(response)
             setSongs(response)
         })
         .catch((error)=> {
             console.log(error)
         })
+    }
+
+    const handleChangeTrack = (song) => {
+        setTrack(song)
     }
     
     return (
@@ -27,7 +30,7 @@ const WelcomePlaylists = () => {
         <span className='font-semibold'>Bonjour</span>
         <div className='flex flex-wrap justify-center mx-auto items-center gap-4 h-full'>
           {songs.map((song) => (
-            <div key={song.id} className='flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-all' onClick={() => setTrack(song)}>
+            <div key={song.id} className='flex flex-col justify-center items-center cursor-pointer hover:scale-105 transition-all' onClick={() => handleChangeTrack(song)}>
               <img src={song.coverImage} alt={song.title} className='w-20 h-20 rounded-full object-cover' />
               {/* <span className='text-sm font-semibold'>{song.title}</span> */}
             </div>
