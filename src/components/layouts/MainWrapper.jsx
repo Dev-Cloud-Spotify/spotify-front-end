@@ -6,10 +6,10 @@ import PlayLists from '../PlayLists';
 const MainWrapper = () => {
     return (
         <div className='w-full h-full rounded-md bg-[#312528] max-h-full overflow-auto'>
-            <div className='bg-pink-600 w-full h-[260px]'>
+            <div className='bg-gradient-to-b from-[#474747] to-[#121212] w-full h-[260px]'>
                 <WelcomePlaylists/>
             </div>
-            <div className='bg-blue-400 h-full'>
+            <div className='bg-[#121212] h-full'>
                 <PlayLists />
             </div>
         </div>
