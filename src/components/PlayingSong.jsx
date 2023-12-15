@@ -7,9 +7,7 @@ const PlayingSong = () => {
     const { track } = useSpotifyContext();
     const [liked, setLiked] = useState(false);
     
-    useEffect(() => {
-        console.log('track', track)
-    }, [track])
+    
     return (
         <div className='flex items-center gap-4 justify-start'>
             {track?.title && (

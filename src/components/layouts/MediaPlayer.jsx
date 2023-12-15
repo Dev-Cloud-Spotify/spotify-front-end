@@ -227,7 +227,7 @@ const MediaPlayer = () => {
           type="range"
           value={audioRef.current.currentTime}
           min="0"
-          max={audioRef.current.duration}
+          max={audioRef.current.duration || 0}
           style={{
             background: calculateGradient(),
             overflow: isHovered ? 'visible' : 'hidden',

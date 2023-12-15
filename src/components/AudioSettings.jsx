@@ -57,7 +57,6 @@ const AudioSettings = () => {
             </div>
             <input
             value={volume}
-            onMou
             style={{
                 background: `linear-gradient(to right,
                     ${isHovered ? '#1db954' : '#fff'} 0%,
