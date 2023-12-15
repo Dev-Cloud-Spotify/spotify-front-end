@@ -16,172 +16,183 @@ import { useSpotifyContext } from '@/context/SpotifyContext';
 const MediaPlayer = () => {
 
   const { track, setTrack, volume, tracks, setTracks, audioRef} = useSpotifyContext();
-// const [tracks, setTracks] = useState([]);
-const [isHovered, setIsHovered] = useState(false);
-const [isShuffling, setIsShuffling] = useState(false);
-const [isLooping, setIsLooping] = useState(false);
-const [isPlaying, setIsPlaying] = useState(false); 
-const [currentAudioTime, setCurrentAudioTime] = useState(0);
-const [selectedTrackCFurl, setSelectedTrackCFurl] = useState(
-  tracks[0]?.CFurl
-);
-const [selectedTrackTitle, setSelectedTrackTitle] = useState(
-  tracks[0]?.title
-);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isShuffling, setIsShuffling] = useState(false);
+  const [isLooping, setIsLooping] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false); 
+  const [currentAudioTime, setCurrentAudioTime] = useState(0);
+  const [selectedTrackCFurl, setSelectedTrackCFurl] = useState(tracks[0]?.CFurl);
+  const [selectedTrackTitle, setSelectedTrackTitle] = useState(tracks[0]?.title);
 
+  //handle track change 
+  useEffect(() => {
+    const audio = audioRef.current;
 
-useEffect(() => {
-  console.log('track.CFurl', track.CFurl);
-  const audio = audioRef.current;
+    if (!track.CFurl) return;
 
-  if (!track.CFurl) return;
-
-  // Pause the current track if it is playing
-  if (isPlaying) {
-    setIsPlaying(false);
-    audio.pause();
-  }
-
-  // Set the new track
-  setSelectedTrackCFurl(track.CFurl);
-  setSelectedTrackTitle(track.title);
-  audioRef.current.src = track.CFurl;
-
-  // Load the new track
-  audioRef.current.load();
-
-  // If isPlaying was true, start playing the new track
-  if (isPlaying) {
-    setIsPlaying(true);
-    audioRef.current.play();
-  }
-
-}, [track.CFurl]);
-
-// useEffect(() => {
-//   audioRef.current.src = selectedTrackCFurl || '';
-//   console.log('audioRef.current', audioRef.current);
-// }, [selectedTrackCFurl]);
-
-useEffect(() => {
-  const getsongsAPI = async () => {
-    try {
-      const myResponse = await songsAPI.getSongs()
-      .then((response) => {
-        return response;
-      });
+    // Pause the current track if it is playing
+    if (isPlaying) {
       setIsPlaying(false);
-      //set the first to be mounted right after the fetch is completed to avoid that fucking undefined error
-      setSelectedTrackCFurl(myResponse[0]?.CFurl);
-      setTrack(myResponse[0])
-      setTracks(myResponse)
-    } catch (error) {
-      console.error(error);
+      audio.pause();
     }
-  };
-  getsongsAPI();
-}, []);
 
+    // Set the new track
+    setSelectedTrackCFurl(track.CFurl);
+    setSelectedTrackTitle(track.title);
+    audioRef.current.src = track.CFurl;
 
-const handlePlayPause = () => {
-  setIsPlaying(!isPlaying);
-  setCurrentAudioTime(0);
-};
+    // Load the new track
+    audioRef.current.load();
 
-const handleNext = () => {
-  const currentIndex = tracks.findIndex(
-    (track) => track.CFurl === selectedTrackCFurl
-  );
-  const nextIndex = (currentIndex + 1) % tracks.length;
-  setSelectedTrackCFurl(tracks[nextIndex]?.CFurl);
-  setSelectedTrackTitle(tracks[nextIndex]?.title);
-  setTrack(tracks[nextIndex])
-
-  audioRef.current.load();
-  setIsPlaying(true)
-};
-
-const handlePrevious = () => {
-  const currentIndex = tracks.findIndex(
-    (track) => track.CFurl === selectedTrackCFurl
-  );
-  // Calculate the previous index, considering the possibility of negative values
-  const previousIndex = (currentIndex - 1 + tracks.length) % tracks.length;
-  setSelectedTrackCFurl(tracks[previousIndex]?.CFurl);
-  setSelectedTrackTitle(tracks[previousIndex]?.title);
-  setTrack(tracks[previousIndex])
-  
-  audioRef.current.load();
-  setIsPlaying(true)
-
-};
-
-useEffect(() => {
-  //const audio = audioRef.current;
-  const handleTimeUpdate = () => {
-    setCurrentAudioTime(audioRef.current.currentTime);
-  };
-  const intervalId = setInterval(() => {
-    handleTimeUpdate();
-  }, 1000);
-  return () => {
-    clearInterval(intervalId);
-  };
-}, []);
-
-useEffect(() => {
-  const handleKeyUp = (e) => {
-    if (e.key === 'Enter') {
-      handlePlayPause();
+    // If isPlaying was true, start playing the new track
+    if (isPlaying) {
+      setIsPlaying(true);
+      audioRef.current.play();
     }
-  };
 
-  document.addEventListener('keyup', handleKeyUp);
+  }, [track.CFurl]);
 
-  return () => {
-    // Cleanup the event listener when the component unmounts
-    document.removeEventListener('keyup', handleKeyUp);
-  };
-}, [handlePlayPause]);
 
-//console.log('la state tracks', tracks[0]?.title);
+  //fetch songs from API
+  useEffect(() => {
+    const getsongsAPI = async () => {
+      try {
+        const myResponse = await songsAPI.getSongs()
+        .then((response) => {
+          return response;
+        });
+        setIsPlaying(false);
+        //set the first to be mounted right after the fetch is completed to avoid that fucking undefined error
+        setSelectedTrackCFurl(myResponse[0]?.CFurl);
+        setTrack(myResponse[0])
+        setTracks(myResponse)
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getsongsAPI();
+  }, []);
 
-useEffect(() => {
-  const audio = audioRef.current;
-  if (isPlaying) {
-    audioRef.current.play();
-    //console.log(audioRef.current.currentTime, 'currentAudioTime');
-  } else {
-    audioRef.current.pause();
-  }
 
-  if (isPlaying && currentAudioTime >= audio.duration) {
+  // handle pause
+  const handlePlayPause = () => {
+    setIsPlaying(!isPlaying);
     setCurrentAudioTime(0);
-    setIsPlaying(false);
-  }
+  };
 
-}, [isPlaying, audioRef.current.currentTime]);
+  //handle next track
+  const handleNext = () => {
+    const currentIndex = tracks.findIndex(
+      (track) => track.CFurl === selectedTrackCFurl
+    );
+    const nextIndex = (currentIndex + 1) % tracks.length;
+    setSelectedTrackCFurl(tracks[nextIndex]?.CFurl);
+    setSelectedTrackTitle(tracks[nextIndex]?.title);
+    setTrack(tracks[nextIndex])
 
-const formatTime = (timeInSeconds) => {
-  if (!timeInSeconds) {
-    return '0:00';
-  }
+    audioRef.current.load();
+    setIsPlaying(true)
+  };
 
-  const minutes = Math.floor(timeInSeconds / 60);
-  const seconds = Math.floor(timeInSeconds % 60);
+  //handlePrevious Track
+  const handlePrevious = () => {
+    //replay track at start if already started
+    console.log(audioRef.current.currentTime)
+    if(audioRef.current.currentTime >= 4) {
+      audioRef.current.currentTime = 0
+      return;
+    }
+    const currentIndex = tracks.findIndex(
+      (track) => track.CFurl === selectedTrackCFurl
+    );
+    // Calculate the previous index, considering the possibility of negative values
+    const previousIndex = (currentIndex - 1 + tracks.length) % tracks.length;
+    setSelectedTrackCFurl(tracks[previousIndex]?.CFurl);
+    setSelectedTrackTitle(tracks[previousIndex]?.title);
+    setTrack(tracks[previousIndex])
+    
+    audioRef.current.load();
+    setIsPlaying(true)
 
-  return `${minutes}:${String(seconds).padStart(2, '0')}`;
-};
+  };
 
-const randomTrack = () => {
-  const randomIndex = Math.floor(Math.random() * tracks.length);
-  setSelectedTrackCFurl(tracks[randomIndex]?.CFurl);
-  setSelectedTrackTitle(tracks[randomIndex]?.title);
-  audioRef.current.pause();
-};
+  //handle audio time update
+  useEffect(() => {
+    //const audio = audioRef.current;
+    const handleTimeUpdate = () => {
+      setCurrentAudioTime(audioRef.current.currentTime);
+    };
+    const intervalId = setInterval(() => {
+      handleTimeUpdate();
+    }, 1000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  //handle start/pause with spacebar 
+  useEffect(() => {
+    const handleKeyUp = (e) => {
+      if (e.key === ' ') {
+        handlePlayPause();
+      }
+    };
+
+    document.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      // Cleanup the event listener when the component unmounts
+      document.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [handlePlayPause]);
 
 
+  //handle audio play/pause and end of track
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (isPlaying) {
+      audioRef.current.play();
+      //console.log(audioRef.current.currentTime, 'currentAudioTime');
+    } else {
+      audioRef.current.pause();
+    }
 
+    if (isPlaying && currentAudioTime >= audio.duration) {
+      setCurrentAudioTime(0);
+      setIsPlaying(false);
+    }
+
+  }, [isPlaying, audioRef.current.currentTime]);
+
+  //display time in minutes and seconds
+  const formatTime = (timeInSeconds) => {
+    if (!timeInSeconds) {
+      return '0:00';
+    }
+
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+
+    return `${minutes}:${String(seconds).padStart(2, '0')}`;
+  };
+
+  //handle shuffle
+  const randomTrack = () => {
+    setTracks(tracks.sort(() => Math.random() - 0.5));
+  };
+
+  //handle shuffle
+  useEffect(() => {
+    if (isShuffling) {
+      randomTrack();
+    }
+    else {
+      setTracks(tracks.sort((a, b) => a.id - b.id));
+    }
+  }, [isShuffling]);
+
+
+  //handle track bar gradient
   const calculateGradient = () => {
     const formattedTime = formatTime(audioRef.current.currentTime);
     const [minutes, seconds] = formattedTime.split(':');
