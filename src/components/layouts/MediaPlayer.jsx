@@ -97,7 +97,6 @@ const MediaPlayer = () => {
   //handlePrevious Track
   const handlePrevious = () => {
     //replay track at start if already started
-    console.log(audioRef.current.currentTime)
     if(audioRef.current.currentTime >= 4) {
       audioRef.current.currentTime = 0
       return;
@@ -152,7 +151,6 @@ const MediaPlayer = () => {
     const audio = audioRef.current;
     if (isPlaying) {
       audioRef.current.play();
-      //console.log(audioRef.current.currentTime, 'currentAudioTime');
     } else {
       audioRef.current.pause();
     }
