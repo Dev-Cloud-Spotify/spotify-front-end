@@ -13,7 +13,6 @@ const SideBarPlayLists = ({ inputSearch }) => {
     const fetchPlayLists = () => {
         playlistsAPI.getPlaylists()
         .then((response) => {
-            console.log(response)
             setPlaylists(response);
         })
         .catch((error) => {
@@ -38,8 +37,8 @@ const SideBarPlayLists = ({ inputSearch }) => {
                 <span className='text-2xl font-semibold'>Unable de find "{inputSearch}"</span>
                 <p className='text-gray'>Check spelling or use other keywords and try again</p>
             </div>}
-            {filteredPlaylists?.map((playlist)=> (
-                <PlaylistItem key={playlist.id} playlist={playlist} />
+            {filteredPlaylists?.map((playlist, index)=> (
+                <PlaylistItem key={`${playlist._id}-${index}`} playlist={playlist} />
             ))}
         </div>
     );
@@ -54,10 +53,13 @@ const PlaylistItem = ({ playlist }) => {
         )
        return (
         <div className={`w-12 h-12 rounded-md grid ${playlist.songs.length!=1? 'grid-cols-2': ' grid-cols-1'}`}>
-        {playlist.songs.map((song) => (
-            <img key={song._id} src={song.coverImage} alt={song.title} 
-                 className={`object-cover cursor-pointer w-full h-full`} 
-             />
+        {playlist?.songs?.map((song, index) => (
+            <div key={`${song._id}-${index}`}>
+                <img  src={song.coverImage} alt={song.title} 
+                    className={`object-cover cursor-pointer w-full h-full`} 
+                />
+            </div>
+
         ))}
     </div>
        )
