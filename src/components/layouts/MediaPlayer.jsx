@@ -158,7 +158,8 @@ const MediaPlayer = () => {
 
     if (isPlaying && currentAudioTime >= audio.duration) {
       setCurrentAudioTime(0);
-      setIsPlaying(false);
+      handleNext();
+      // setIsPlaying(false);
     }
 
   }, [isPlaying, audioRef.current.currentTime]);
