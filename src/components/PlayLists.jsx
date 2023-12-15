@@ -24,7 +24,7 @@ const PlayLists = () => {
     }
 
     return (
-        <div className='p-4 pt-6 h-full'>
+        <div className='p-6 h-full'>
            <span className='text-2xl font-bold'>Concu pour Vous </span>
            <div className='pt-2 flex flex-wrap gap-4 justify-start'>
             {/* PlayLists  */}

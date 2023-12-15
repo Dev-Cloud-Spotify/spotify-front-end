@@ -26,6 +26,14 @@ const playlistsAPI = {
             .catch(error => {
                 console.log(error);
             });
+        },
+
+        getRecentsPlaylist: () => {
+            return axios.get(`${API_URL}/getRecentsPlaylist`)
+            .then(response => response.data)
+            .catch(error => {
+                console.log(error);
+            });
         }
         
 }
