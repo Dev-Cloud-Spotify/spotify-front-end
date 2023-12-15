@@ -19,6 +19,14 @@ const playlistsAPI = {
                 console.log(error);
             });
         },
+
+        getAllSongsPlaylist: () => {
+            return axios.get(`${API_URL}/getAllSongsPlaylist`)
+            .then(response => response.data)
+            .catch(error => {
+                console.log(error);
+            });
+        }
         
 }
 

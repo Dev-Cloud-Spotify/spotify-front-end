@@ -11,18 +11,18 @@ import AudioSettings from '../AudioSettings';
 
 import songsAPI from '@/apis/songs.api';
 import { useSpotifyContext } from '@/context/SpotifyContext';
+import playlistsAPI from '@/apis/playLists.api';
 
 
 const MediaPlayer = () => {
 
-  const { track, setTrack, volume, tracks, setTracks, audioRef} = useSpotifyContext();
+  const { track, setTrack, volume, tracks, setTracks, audioRef, playlist, setPlayList, isPlaying, setIsPlaying} = useSpotifyContext();
   const [isHovered, setIsHovered] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false); 
+  // const [isPlaying, setIsPlaying] = useState(false); 
   const [currentAudioTime, setCurrentAudioTime] = useState(0);
-  const [selectedTrackCFurl, setSelectedTrackCFurl] = useState(tracks[0]?.CFurl);
-  const [selectedTrackTitle, setSelectedTrackTitle] = useState(tracks[0]?.title);
+  const [selectedTrackCFurl, setSelectedTrackCFurl] = useState('');
 
   //handle track change 
   useEffect(() => {
@@ -38,7 +38,6 @@ const MediaPlayer = () => {
 
     // Set the new track
     setSelectedTrackCFurl(track.CFurl);
-    setSelectedTrackTitle(track.title);
     audioRef.current.src = track.CFurl;
 
     // Load the new track
@@ -57,21 +56,28 @@ const MediaPlayer = () => {
   useEffect(() => {
     const getsongsAPI = async () => {
       try {
-        const myResponse = await songsAPI.getSongs()
-        .then((response) => {
-          return response;
-        });
-        setIsPlaying(false);
-        //set the first to be mounted right after the fetch is completed to avoid that fucking undefined error
-        setSelectedTrackCFurl(myResponse[0]?.CFurl);
-        setTrack(myResponse[0])
-        setTracks(myResponse)
+        const myResponse = await playlistsAPI.getAllSongsPlaylist()
+          setPlayList(myResponse)
+          setIsPlaying(false);
+          console.log('myResponse', myResponse.songs)
+          //set the first to be mounted right after the fetch is completed to avoid that fucking undefined error
+          setSelectedTrackCFurl(myResponse.songs[0]?.CFurl);
+          setTrack(myResponse.songs[0])
+          setTracks(myResponse.songs)
       } catch (error) {
         console.error(error);
       }
     };
     getsongsAPI();
   }, []);
+
+  //playlist change
+  useEffect(() => {
+    if(!tracks?.length > 0) return;
+    if(isShuffling) randomTrack();
+    setTrack(tracks[0])
+    setSelectedTrackCFurl(tracks[0]?.CFurl);
+  }, [tracks]);
 
 
   // handle pause
@@ -87,7 +93,6 @@ const MediaPlayer = () => {
     );
     const nextIndex = (currentIndex + 1) % tracks.length;
     setSelectedTrackCFurl(tracks[nextIndex]?.CFurl);
-    setSelectedTrackTitle(tracks[nextIndex]?.title);
     setTrack(tracks[nextIndex])
 
     audioRef.current.load();
@@ -107,7 +112,6 @@ const MediaPlayer = () => {
     // Calculate the previous index, considering the possibility of negative values
     const previousIndex = (currentIndex - 1 + tracks.length) % tracks.length;
     setSelectedTrackCFurl(tracks[previousIndex]?.CFurl);
-    setSelectedTrackTitle(tracks[previousIndex]?.title);
     setTrack(tracks[previousIndex])
     
     audioRef.current.load();
@@ -177,6 +181,7 @@ const MediaPlayer = () => {
   //handle shuffle
   const randomTrack = () => {
     setTracks(tracks.sort(() => Math.random() - 0.5));
+    console.log('tracks shuffled', tracks)
   };
 
   //handle shuffle
