@@ -15,7 +15,7 @@ import { useSpotifyContext } from '@/context/SpotifyContext';
 
 const MediaPlayer = () => {
 
-  const { track, volume, tracks, setTracks, audioRef} = useSpotifyContext();
+  const { track, setTrack, volume, tracks, setTracks, audioRef} = useSpotifyContext();
 // const [tracks, setTracks] = useState([]);
 const [isHovered, setIsHovered] = useState(false);
 const [isShuffling, setIsShuffling] = useState(false);
@@ -31,30 +31,37 @@ const [selectedTrackTitle, setSelectedTrackTitle] = useState(
 
 
 useEffect(() => {
-  console.log('track.CFurl', track.CFurl)
-  if(!track.CFurl) return;
+  console.log('track.CFurl', track.CFurl);
   const audio = audioRef.current;
 
-  // Pause the current track
-  setIsPlaying(false);
-  if (audio){
+  if (!track.CFurl) return;
+
+  // Pause the current track if it is playing
+  if (isPlaying) {
+    setIsPlaying(false);
     audio.pause();
   }
-  
+
   // Set the new track
   setSelectedTrackCFurl(track.CFurl);
   setSelectedTrackTitle(track.title);
   audioRef.current.src = track.CFurl;
+
+  // Load the new track
   audioRef.current.load();
-  
-  setIsPlaying(true);
+
+  // If isPlaying was true, start playing the new track
+  if (isPlaying) {
+    setIsPlaying(true);
+    audioRef.current.play();
+  }
 
 }, [track.CFurl]);
 
-useEffect(() => {
-  audioRef.current.src = selectedTrackCFurl || '';
-  console.log('audioRef.current', audioRef.current);
-}, [selectedTrackCFurl]);
+// useEffect(() => {
+//   audioRef.current.src = selectedTrackCFurl || '';
+//   console.log('audioRef.current', audioRef.current);
+// }, [selectedTrackCFurl]);
 
 useEffect(() => {
   const getsongsAPI = async () => {
@@ -63,10 +70,11 @@ useEffect(() => {
       .then((response) => {
         return response;
       });
-      setTracks(myResponse);
+      setIsPlaying(false);
       //set the first to be mounted right after the fetch is completed to avoid that fucking undefined error
       setSelectedTrackCFurl(myResponse[0]?.CFurl);
-      setTracks(myResponse[0]?.CFurl)
+      setTrack(myResponse[0])
+      setTracks(myResponse)
     } catch (error) {
       console.error(error);
     }
@@ -87,14 +95,11 @@ const handleNext = () => {
   const nextIndex = (currentIndex + 1) % tracks.length;
   setSelectedTrackCFurl(tracks[nextIndex]?.CFurl);
   setSelectedTrackTitle(tracks[nextIndex]?.title);
-  
+  setTrack(tracks[nextIndex])
 
-  audioRef.current.pause();
+  audioRef.current.load();
+  setIsPlaying(true)
 };
-
-useEffect(() => {
-  console.log('selectedTrackCFurl', track);
-}, [track]);
 
 const handlePrevious = () => {
   const currentIndex = tracks.findIndex(
@@ -104,7 +109,11 @@ const handlePrevious = () => {
   const previousIndex = (currentIndex - 1 + tracks.length) % tracks.length;
   setSelectedTrackCFurl(tracks[previousIndex]?.CFurl);
   setSelectedTrackTitle(tracks[previousIndex]?.title);
-  audioRef.current.pause();
+  setTrack(tracks[previousIndex])
+  
+  audioRef.current.load();
+  setIsPlaying(true)
+
 };
 
 useEffect(() => {
@@ -139,7 +148,6 @@ useEffect(() => {
 
 useEffect(() => {
   const audio = audioRef.current;
-
   if (isPlaying) {
     audioRef.current.play();
     //console.log(audioRef.current.currentTime, 'currentAudioTime');

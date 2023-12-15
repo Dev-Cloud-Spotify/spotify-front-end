@@ -12,7 +12,7 @@ export const SpotifyProvider = ({ children }) => {
     const [volume, setVolume] = useState(20);
     
     useEffect(() => {
-        audioRef.current.src = track.CFurl;
+        // audioRef.current.src = track.CFurl;
         console.log('track changed', track);
     }, [track]);
 
@@ -31,7 +31,8 @@ export const SpotifyProvider = ({ children }) => {
             tracks,
             setTracks,
             volume,
-            setVolume
+            setVolume,
+            
         }}
         >
         {children}

@@ -38,17 +38,6 @@ const AudioSettings = () => {
         
     }
 
-    const handleVolumeChange = (e) => {
-        const newVolume = parseFloat(e.target.value);
-        setVolume(newVolume);
-        audioRef.current.volume = newVolume;
-      };
-      const handleMuteToggle = () => {
-        // Toggle between muting and unmuting
-        const newVolume = audioRef.current.volume === 0 ? 1 : 0;
-        setVolume(newVolume);
-        audioRef.current.volume = newVolume;
-      };
 
     return (
         <div className='flex items-center justify-center gap-4'>

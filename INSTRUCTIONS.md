@@ -9,8 +9,8 @@
     4. Faire un lecteur mp3 fonctionnel 
         
         
-        1. fonction repeat la playlist
-        2. fonction repeat one song
+      TODO:  1. fonction repeat la playlist
+      TODO:  2. fonction repeat one song
         3. skip les musiques
         4. fonction random dans la playlist
         5. gestion du son via barre
@@ -19,10 +19,10 @@
         8. BONUS - Lors du clic sur les 2 fleches, mettre la page en full screen, avec l’artiste et l’album, idee de design
             
             
-2. Faire un systeme d’ecoute en simultané
-    1. generer une url qui connectera les utilisateur qui clic a la lecture
-    2. la lecture est la meme sur tout les appareil, si l’utilisateur A met pause, cela affectera tout les autres utilisateur, utiliser les web-socket pour cela
+ 2. Faire un systeme d’ecoute en simultané
+ TODO:   1. generer une url qui connectera les utilisateur qui clic a la lecture
+  TODO:  2. la lecture est la meme sur tout les appareil, si l’utilisateur A met pause, cela affectera tout les autres utilisateur, utiliser les web-socket pour cela
 3. Créer des playlist dynamique :
-    1. Playlist dernières écoutes :
-        1. affiche les 20 dernières musique du plus recent au plus ancien
-    2. Playlist en boucle: mettre les musiques les plus écouté
+   TODO: 1. Playlist dernières écoutes :
+    TODO:    1. affiche les 20 dernières musique du plus recent au plus ancien
+   TODO: 2. Playlist en boucle: mettre les musiques les plus écouté
