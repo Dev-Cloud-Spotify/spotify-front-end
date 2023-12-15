@@ -1,7 +1,8 @@
 import playlistsAPI from '@/apis/playLists.api';
 import { useSpotifyContext } from '@/context/SpotifyContext';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6';
+import { IconPlay } from './utils/Elements';
 
 const PlayLists = () => {
 
@@ -40,6 +41,7 @@ const PlayLists = () => {
 const PlayListCard = ({ playlist }) => {
 
     const { playList, setPlayList, isPlaying, setIsPlaying } = useSpotifyContext();
+    const router = useRouter();
 
     //handle cover image
     const coverImage = () => {
@@ -61,7 +63,9 @@ const PlayListCard = ({ playlist }) => {
     }
 
     //handle select playlist
-    const handleSelectPlaylist = async () => {
+    const handleSelectPlaylist = async (e) => {
+        //prevent default
+        e.stopPropagation();
         try{
             const playlistWithSongs = await playlistsAPI.getPlaylistById(playlist._id);
             setPlayList(playlistWithSongs);
@@ -73,24 +77,23 @@ const PlayListCard = ({ playlist }) => {
     }
 
     //handle pause audio
-    const handlePauseAudio = () => {
+    const handlePauseAudio = (e) => {
+        //prevent default behavior
+        e.stopPropagation();
         setIsPlaying(false);
     }
 
     return (
-        <div className='bg-[#161616] hover:bg-[#252525] p-4 flex flex-col gap-1 rounded-md w-44 transition-all group shadow-xl'>
+        <div className='bg-[#161616] hover:bg-[#252525] p-4 flex flex-col gap-1 rounded-md w-44 transition-all group shadow-xl'
+        onClick={()=> router.push(`/playlist/${playlist._id}`)}>
             <div className='relative'>
                 {coverImage()}
-                {playList?._id === playlist._id && isPlaying? (
-                    <FaCirclePause size={48}  
-                    className='absolute right-2 bottom-2 text-primary bg-black rounded-full cursor-pointer opacity-95 transition-all duration-300 hover:scale-105'
-                    onClick={handlePauseAudio} /> 
-                ) : (
-                   <FaCirclePlay size={48}  
-                    className='absolute right-2 bottom-2 text-primary bg-black rounded-full opacity-0 transform translate-y-4 cursor-pointer group-hover:opacity-95 group-hover:translate-y-0 transition-all duration-300 hover:scale-105'
-                    onClick={handleSelectPlaylist} /> 
-                )}
-                
+                <IconPlay 
+                    playlist={playlist} 
+                    size={50} 
+                    pauseStyle={'absolute right-2 bottom-2 duration-300'} 
+                    playStyle={'absolute right-2 bottom-2 opacity-0 transform translate-y-4 cursor-pointer group-hover:opacity-95 group-hover:translate-y-0 transition-all duration-300'} 
+                />
             </div>
             <span className='text-sm font-bold pt-3'>{playlist.title}</span>
             <div>

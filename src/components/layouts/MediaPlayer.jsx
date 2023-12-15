@@ -9,18 +9,16 @@ import { SlLoop } from "react-icons/sl";
 import PlayingSong from '../PlayingSong';
 import AudioSettings from '../AudioSettings';
 
-import songsAPI from '@/apis/songs.api';
 import { useSpotifyContext } from '@/context/SpotifyContext';
 import playlistsAPI from '@/apis/playLists.api';
 
 
 const MediaPlayer = () => {
 
-  const { track, setTrack, volume, tracks, setTracks, audioRef, playlist, setPlayList, isPlaying, setIsPlaying} = useSpotifyContext();
+  const { track, setTrack, volume, tracks, setTracks, audioRef, setPlayList, isPlaying, setIsPlaying} = useSpotifyContext();
   const [isHovered, setIsHovered] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
-  // const [isPlaying, setIsPlaying] = useState(false); 
   const [currentAudioTime, setCurrentAudioTime] = useState(0);
   const [selectedTrackCFurl, setSelectedTrackCFurl] = useState('');
 

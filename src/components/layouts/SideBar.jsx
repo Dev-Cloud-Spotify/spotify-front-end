@@ -3,6 +3,7 @@ import { GoArrowRight, GoHome, GoPlus, GoSearch } from "react-icons/go";
 import { LuLibrary } from "react-icons/lu";
 
 import { FaList } from 'react-icons/fa';
+import Link from 'next/link';
 
 //lazy load SideBarPlayLists
 const SideBarPlayLists = React.lazy(() => import('../sideBar/SideBarPlayLists'));
@@ -73,14 +74,18 @@ const SideBar = () => {
     return (
         <div className='sm:w-[420px] sm:min-w-[420px] w-[100px] min-w-[100px] rounded-md flex flex-col gap-2 h-full relative'>
             <div className='bg-background rounded-md p-5 flex flex-col gap-6 text-gray font-semibold '>
+                <Link href='/'>
                 <div className='flex gap-5 items-center cursor-pointer hover:text-white transition-all'>
                     <GoHome size={26} className='text-white text-2xl' />
                     <span>Home</span>
                 </div>
+                </Link>
+                <Link href='/search'>
                 <div className='flex gap-5 items-center hover:text-white cursor-pointer transition-all'>
                     <GoSearch size={26} className='text-white text-2xl' />
                     <span>Search</span>
                 </div>
+                </Link>
             </div>
             <div className='bg-background rounded-md p-5 flex flex-col gap-4 h-full overflow-hidden'>
                 <div className='flex justify-between text-gray font-semibold'>
