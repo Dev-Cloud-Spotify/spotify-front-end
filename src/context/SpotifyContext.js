@@ -10,7 +10,7 @@ export const SpotifyProvider = ({ children }) => {
     const [playList, setPlayList] = useState(localStorage.getItem('playlist') ? JSON.parse(localStorage.getItem('playlist')) : {});
     const [track, setTrack] = useState(localStorage.getItem('track') ? JSON.parse(localStorage.getItem('track')) : {});
     const [tracks, setTracks] = useState(localStorage.getItem('playlist') ? JSON.parse(localStorage.getItem('playlist')).songs : []); 
-    const [volume, setVolume] = useState(localStorage.getItem('volume') ? JSON.parse(localStorage.getItem('volume')) : 20);
+    const [volume, setVolume] = useState(localStorage.getItem('volume') ? localStorage.getItem('volume') : 20);
     const [isPlaying, setIsPlaying] = useState(false);
     
     useEffect(() => {
@@ -21,7 +21,7 @@ export const SpotifyProvider = ({ children }) => {
     useEffect(() => {
         audioRef.current.volume = volume / 100;
         console.log('volume changed', audioRef.current.volume);
-        localStorage.setItem('volume', JSON.stringify(volume));
+        localStorage.setItem('volume', volume);
     }, [volume]);
 
     useEffect(() => {

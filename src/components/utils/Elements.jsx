@@ -5,10 +5,12 @@ import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6';
 
 export const IconPlay = ({ playlist, size, playStyle, pauseStyle }) => {
 
-    const { playList, setPlayList, isPlaying, setIsPlaying } = useSpotifyContext();
+    const { playList, setPlayList, isPlaying, setIsPlaying, setTrack } = useSpotifyContext();
 
     //handle select playlist
     const handleSelectPlaylist = async (e) => {
+        console.log('playlistID', playlist._id)
+        console.log('playList', playList._id)
         //prevent default behavior
         e.stopPropagation();
         //if playlist is already playing, play it
@@ -20,6 +22,7 @@ export const IconPlay = ({ playlist, size, playStyle, pauseStyle }) => {
         playlistsAPI.getPlaylistById(playlist._id)
         .then(res => {
             setPlayList(res);
+            setTrack(res.songs[0])
             setIsPlaying(true);
         })
         .catch(err => console.log(err));

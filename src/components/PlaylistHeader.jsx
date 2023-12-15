@@ -1,13 +1,8 @@
-import { useSpotifyContext } from '@/context/SpotifyContext';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RxDotsHorizontal } from "react-icons/rx";
 import { IconPlay } from './utils/Elements';
 
 const PlaylistHeader = ({ playlist }) => {
-
-    
-    useEffect(() => {
-    }, [playlist]);
 
     const coverImage = () => {
         if(!playlist?.songs?.length > 0) return (

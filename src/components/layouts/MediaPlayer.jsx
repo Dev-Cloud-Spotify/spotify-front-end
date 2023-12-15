@@ -74,8 +74,6 @@ const MediaPlayer = () => {
   useEffect(() => {
     if(!tracks?.length > 0) return;
     if(isShuffling) randomTrack();
-    // setTrack(tracks[0])
-    // setSelectedTrackCFurl(tracks[0]?.CFurl);
   }, [tracks]);
 
 

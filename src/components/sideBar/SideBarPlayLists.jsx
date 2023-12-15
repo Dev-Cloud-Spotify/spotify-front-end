@@ -1,4 +1,5 @@
 import playlistsAPI from '@/apis/playLists.api';
+import { useSpotifyContext } from '@/context/SpotifyContext';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { FaCircle } from 'react-icons/fa';
@@ -48,6 +49,7 @@ const SideBarPlayLists = ({ inputSearch }) => {
 const PlaylistItem = ({ playlist }) => {
 
     const router = useRouter();
+    const { playList } = useSpotifyContext();
 
     const coverImage = () => {
         if(!playlist.songs?.length > 0) return (
@@ -72,7 +74,7 @@ const PlaylistItem = ({ playlist }) => {
         <div className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a] cursor-pointer' onClick={() => router.push(`/playlist/${playlist._id}`)}>
             {coverImage()}
             <div className='flex flex-col'>
-               <span>{playlist.title}</span> 
+               <span className={`${playList._id === playlist._id && 'text-primary'}`}>{playlist.title}</span> 
                <span className='flex items-center gap-1 text-gray'> playlist <FaCircle size={8}/> {playlist.title}</span> 
             </div>
         </div>
