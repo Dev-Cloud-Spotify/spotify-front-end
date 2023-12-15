@@ -1,3 +1,4 @@
+import playlistsAPI from '@/apis/playLists.api';
 import { useSpotifyContext } from '@/context/SpotifyContext';
 import React from 'react';
 import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6';
@@ -10,8 +11,19 @@ export const IconPlay = ({ playlist, size, playStyle, pauseStyle }) => {
     const handleSelectPlaylist = async (e) => {
         //prevent default behavior
         e.stopPropagation();
-        setPlayList(playlist);
-        setIsPlaying(true);
+        //if playlist is already playing, play it
+        if (playList?._id === playlist?._id) {
+            setIsPlaying(true);
+            return;
+        }
+        //else fetch playlist from API and play it
+        playlistsAPI.getPlaylistById(playlist._id)
+        .then(res => {
+            setPlayList(res);
+            setIsPlaying(true);
+        })
+        .catch(err => console.log(err));
+        
     }
 
     //handle pause audio

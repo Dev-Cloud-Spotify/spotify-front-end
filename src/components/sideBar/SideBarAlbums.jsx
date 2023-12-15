@@ -13,7 +13,6 @@ const SideBarPlayLists = ({ inputSearch }) => {
     const fetchAlbums = () => {
         albumsAPI.getAlbums()
         .then((response) => {
-            console.log(response)
             setAlbums(response);
         })
         .catch((error) => {

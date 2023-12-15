@@ -15,12 +15,14 @@ import playlistsAPI from '@/apis/playLists.api';
 
 const MediaPlayer = () => {
 
-  const { track, setTrack, volume, tracks, setTracks, audioRef, setPlayList, isPlaying, setIsPlaying} = useSpotifyContext();
+  const { track, setTrack, tracks, setTracks, audioRef, setPlayList, isPlaying, setIsPlaying, playList} = useSpotifyContext();
   const [isHovered, setIsHovered] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
   const [currentAudioTime, setCurrentAudioTime] = useState(0);
   const [selectedTrackCFurl, setSelectedTrackCFurl] = useState('');
+
+
 
   //handle track change 
   useEffect(() => {
@@ -47,7 +49,7 @@ const MediaPlayer = () => {
       audioRef.current.play();
     }
 
-  }, [track.CFurl]);
+  }, [track.CFurl, playList]);
 
 
   //fetch songs from API
@@ -57,7 +59,6 @@ const MediaPlayer = () => {
         const myResponse = await playlistsAPI.getAllSongsPlaylist()
           setPlayList(myResponse)
           setIsPlaying(false);
-          console.log('myResponse', myResponse.songs)
           //set the first to be mounted right after the fetch is completed to avoid that fucking undefined error
           setSelectedTrackCFurl(myResponse.songs[0]?.CFurl);
           setTrack(myResponse.songs[0])
@@ -73,8 +74,8 @@ const MediaPlayer = () => {
   useEffect(() => {
     if(!tracks?.length > 0) return;
     if(isShuffling) randomTrack();
-    setTrack(tracks[0])
-    setSelectedTrackCFurl(tracks[0]?.CFurl);
+    // setTrack(tracks[0])
+    // setSelectedTrackCFurl(tracks[0]?.CFurl);
   }, [tracks]);
 
 
@@ -179,7 +180,6 @@ const MediaPlayer = () => {
   //handle shuffle
   const randomTrack = () => {
     setTracks(tracks.sort(() => Math.random() - 0.5));
-    console.log('tracks shuffled', tracks)
   };
 
   //handle shuffle

@@ -5,10 +5,8 @@ import { IconPlay } from './utils/Elements';
 
 const PlaylistHeader = ({ playlist }) => {
 
-    const { playList, setPlayList, isPlaying, setIsPlaying } = useSpotifyContext();
     
     useEffect(() => {
-        console.log('PLAYLIST', playlist);
     }, [playlist]);
 
     const coverImage = () => {
@@ -29,16 +27,6 @@ const PlaylistHeader = ({ playlist }) => {
        )
     }
 
-     //handle select playlist
-     const handleSelectPlaylist = async () => {
-            setPlayList(playlist);
-            setIsPlaying(true);
-    }
-
-    //handle pause audio
-    const handlePauseAudio = () => {
-        setIsPlaying(false);
-    }
 
     return (
         <div className='flex flex-col gap-8 pt-12'>

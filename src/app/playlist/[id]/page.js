@@ -1,5 +1,6 @@
 'use client';
 import playlistsAPI from '@/apis/playLists.api';
+import PLaylistSongs from '@/components/PLaylistSongs';
 import PlayLists from '@/components/PlayLists';
 import PlaylistHeader from '@/components/PlaylistHeader';
 import { useParams } from 'next/navigation';
@@ -26,12 +27,12 @@ const Page = () => {
     }
 
     return (
-        <div className='w-full h-full p-6 rounded-md bg-gradient-to-b from-[#222a59] to-[#10121c] max-h-full overflow-auto'>
+        <div className='w-full h-full p-6 rounded-md max-h-full overflow-auto bg-gradient-playlist'>
         <div className=' w-full h-[420px]'>
             <PlaylistHeader playlist={playlist}/>
         </div>
         <div className='h-full'>
-            <PlayLists />
+            <PLaylistSongs songs={playlist?.songs} playlist={playlist} />
         </div>
     </div>
     );

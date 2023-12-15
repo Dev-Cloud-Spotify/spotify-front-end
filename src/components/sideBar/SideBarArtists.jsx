@@ -12,7 +12,6 @@ const SideBarArtists = ({ inputSearch }) => {
     const fetchArtists = () => {
         artistsAPI.getArtists()
         .then((response) => {
-            console.log(response)
             setArtists(response);
         })
         .catch((error) => {
