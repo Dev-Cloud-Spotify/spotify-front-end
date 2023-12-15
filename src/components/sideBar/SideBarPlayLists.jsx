@@ -1,4 +1,5 @@
 import playlistsAPI from '@/apis/playLists.api';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { FaCircle } from 'react-icons/fa';
 
@@ -46,6 +47,8 @@ const SideBarPlayLists = ({ inputSearch }) => {
 
 const PlaylistItem = ({ playlist }) => {
 
+    const router = useRouter();
+
     const coverImage = () => {
         if(!playlist.songs?.length > 0) return (
             <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/spotify-style-illustration-album-art-2020-design-template-ff72ffd1b198e4a94ee8c58cceb1da19_screen.jpg?ts=1600257159" 
@@ -65,9 +68,8 @@ const PlaylistItem = ({ playlist }) => {
        )
     }
 
-
     return (
-        <div className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a] cursor-pointer'>
+        <div className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a] cursor-pointer' onClick={() => router.push(`/playlist/${playlist._id}`)}>
             {coverImage()}
             <div className='flex flex-col'>
                <span>{playlist.title}</span> 
