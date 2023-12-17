@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
         <body className={inter.className}>
           <SpotifyProvider>
 
-        <main className='w-screen h-[100vh] flex flex-col gap-1 p-2'>
+        <main className='w-screen h-screen overflow-hidden flex flex-col gap-1 p-2'>
           <div className="flex gap-2 h-[92%] w-full pb-1">
             <SideBar />
             {children}
