@@ -19,14 +19,15 @@ const PLaylistSongs = ({ songs, playlist }) => {
                     </tr>
                 </thead>
                 {/* divider  */}
-                <tr>
-                    <td colSpan='6' className='border-b-2 border-gray-600'></td>
-                </tr>
-                {/* Empty row for space */}
-                <tr>
-                    <td colSpan='6' className='h-4'></td>
-                </tr>
+                
                 <tbody>
+                    <tr>
+                        <td colSpan='6' className='border-b-2 border-gray-600'></td>
+                    </tr>
+                    {/* Empty row for space */}
+                    <tr>
+                        <td colSpan='6' className='h-4'></td>
+                    </tr>
                     {songs?.map((song, index) => (
                         <SongRow key={`${song._id}-${index}`} song={song} index={index+1} playlist={playlist} />
                     ))}
