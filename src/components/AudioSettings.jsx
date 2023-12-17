@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaList} from 'react-icons/fa';
 import { MdOpenInFull } from "react-icons/md";
 import { SlVolume1, SlVolume2, SlVolumeOff } from "react-icons/sl";
@@ -7,27 +7,31 @@ import { useSpotifyContext } from '@/context/SpotifyContext';
 
 const AudioSettings = () => {
 
-    const { volume, setVolume } = useSpotifyContext();
-    const [lastVolume, setLastVolume] = useState(20); //for unmute [lastVolume = volume]
+    const { volume, setVolume, audioRef } = useSpotifyContext();
+    const [lastVolume, setLastVolume] = useState(20); 
     const [isMuted, setIsMuted] = useState(false);
     const [isHovered, setIsHovered] = useState(false)
+    const isInitialRender = useRef(true);
 
     //Mute
     const handleMute = () => {
         setIsMuted(!isMuted);
     }
 
-    //update volume if muted
-    useEffect(() => {
-        if (isMuted) {
-            setLastVolume(volume);
-            setVolume(0);
-        }
-        else {
-            setVolume(lastVolume);
-        }
-
-    }, [isMuted])
+    // Update volume if muted
+useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return; // Skip the effect on initial render
+    }
+  
+    if (isMuted) {
+      setLastVolume(volume);
+      setVolume(0);
+    } else {
+      setVolume(lastVolume);
+    }
+  }, [isMuted]);
 
     //Ajust volume
     const handleSetVolume = (e) => {

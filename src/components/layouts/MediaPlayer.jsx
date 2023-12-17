@@ -21,6 +21,7 @@ const MediaPlayer = () => {
   const [isLooping, setIsLooping] = useState(false);
   const [currentAudioTime, setCurrentAudioTime] = useState(0);
   const [selectedTrackCFurl, setSelectedTrackCFurl] = useState('');
+  const isInitialRender = useRef(true);
 
 
 
@@ -28,7 +29,7 @@ const MediaPlayer = () => {
   useEffect(() => {
     const audio = audioRef.current;
 
-    if (!track.CFurl) return;
+    if (!track?.CFurl) return;
 
     // Pause the current track if it is playing
     if (isPlaying) {
@@ -49,25 +50,26 @@ const MediaPlayer = () => {
       audioRef.current.play();
     }
 
-  }, [track.CFurl, playList]);
+  }, [track?.CFurl, playList]);
 
 
   //fetch songs from API
   useEffect(() => {
-    const getsongsAPI = async () => {
-      try {
-        const myResponse = await playlistsAPI.getAllSongsPlaylist()
-          setPlayList(myResponse)
-          setIsPlaying(false);
-          //set the first to be mounted right after the fetch is completed to avoid that fucking undefined error
-          setSelectedTrackCFurl(myResponse.songs[0]?.CFurl);
-          setTrack(myResponse.songs[0])
-          setTracks(myResponse.songs)
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getsongsAPI();
+
+    // const getsongsAPI = async () => {
+    //   try {
+    //     const myResponse = await playlistsAPI.getAllSongsPlaylist()
+    //       setPlayList(myResponse)
+    //       setIsPlaying(false);
+    //       //set the first to be mounted right after the fetch is completed to avoid that fucking undefined error
+    //       setSelectedTrackCFurl(myResponse.songs[0]?.CFurl);
+    //       setTrack(myResponse.songs[0])
+    //       setTracks(myResponse.songs)
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // };
+    // getsongsAPI();
   }, []);
 
   //playlist change

@@ -74,8 +74,8 @@ const PlaylistItem = ({ playlist }) => {
         <div className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a] cursor-pointer' onClick={() => router.push(`/playlist/${playlist._id}`)}>
             {coverImage()}
             <div className='flex flex-col'>
-               <span className={`${playList._id === playlist._id && 'text-primary'}`}>{playlist.title}</span> 
-               <span className='flex items-center gap-1 text-gray'> playlist <FaCircle size={8}/> {playlist.title}</span> 
+               <span className={`${playList?._id === playlist._id && 'text-primary'} line-clamp-1`}>{playlist.title}</span> 
+               <span className='flex items-center gap-1 text-gray line-clamp-1'> playlist <FaCircle size={8}/> {playlist.title}</span> 
             </div>
         </div>
     )

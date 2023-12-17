@@ -8,7 +8,7 @@ import HeartAnimation from '../../assets/lotties/HeartAnimation.json';
 
 export const IconPlay = ({ playlist, size, playStyle, pauseStyle }) => {
 
-    const { playList, setPlayList, isPlaying, setIsPlaying, setTrack } = useSpotifyContext();
+    const { playList, setPlayList, isPlaying, setIsPlaying, setTrack, track } = useSpotifyContext();
 
     //handle select playlist
     const handleSelectPlaylist = async (e) => {
@@ -17,7 +17,7 @@ export const IconPlay = ({ playlist, size, playStyle, pauseStyle }) => {
         //prevent default behavior
         e.stopPropagation();
         //if playlist is already playing, play it
-        if (playList?._id === playlist?._id) {
+        if (playList?._id === playlist?._id && track) {
             setIsPlaying(true);
             return;
         }

@@ -48,7 +48,7 @@ const SideBarArtists = ({ inputSearch }) => {
                     <img src={artist.artistImage || getRandomImage()} 
                     className='w-12 h-12 object-cover rounded-full' alt="" />
                     <div className='flex flex-col'>
-                       <span className='first-letter:uppercase font-bold'>{artist.name} {artist.lastName} </span> 
+                       <span className='first-letter:uppercase font-bold line-clamp-1'>{artist.name} {artist.lastName} </span> 
                     </div>
                 </div>
             ))}

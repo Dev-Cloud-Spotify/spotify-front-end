@@ -16,16 +16,20 @@ const Page = () => {
         fetchArtist(id);
     }, [id]);
 
+    useEffect(() => {
+        const data = {
+            _id: artist?._id,
+            title: artist?.name,
+            songs: artist?.songs,
+        }
+        setPlaylist(data);
+
+    }, [artist]);
+
     const fetchArtist = async (id) => {
         try{
             const response = await artistsAPI.getArtistbyId(id);
             setArtist(response);
-            const playlist = {
-                _id: artist?._id,
-                title: artist?.name,
-                songs: artist?.songs,
-            }
-            setPlaylist(playlist);
         }
         catch(err){
             console.log(err);
@@ -33,8 +37,8 @@ const Page = () => {
     }
 
     return (
-    <div className='w-full h-full rounded-md max-h-full overflow-auto bg-gradient-playlist'>
-        <div className='w-full h-[520px]'>
+    <div className='w-full h-full rounded-md max-h-full overflow-auto bg-gradient-artist'>
+        <div className='w-full h-[500px]'>
             <ArtistHeader artist={artist}/>
         </div>
         <div className='h-full'>

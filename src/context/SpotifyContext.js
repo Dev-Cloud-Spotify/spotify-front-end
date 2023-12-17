@@ -7,13 +7,14 @@ export const SpotifyContext = createContext();
 export const SpotifyProvider = ({ children }) => {
     
     const audioRef = useRef(new Audio());
-    const [playList, setPlayList] = useState(localStorage.getItem('playlist') ? JSON.parse(localStorage.getItem('playlist')) : {});
-    const [track, setTrack] = useState(localStorage.getItem('track') ? JSON.parse(localStorage.getItem('track')) : {});
-    const [tracks, setTracks] = useState(localStorage.getItem('playlist') ? JSON.parse(localStorage.getItem('playlist')).songs : []); 
+    const [playList, setPlayList] = useState(localStorage.getItem('playlist') ? JSON.parse(localStorage.getItem('playlist')) : null);
+    const [track, setTrack] = useState(localStorage.getItem('track') ? JSON.parse(localStorage.getItem('track')) : null);
+    const [tracks, setTracks] = useState(localStorage.getItem('playlist') ? JSON.parse(localStorage.getItem('playlist'))?.songs : []); 
     const [volume, setVolume] = useState(localStorage.getItem('volume') ? localStorage.getItem('volume') : 20);
     const [isPlaying, setIsPlaying] = useState(false);
     
     useEffect(() => {
+        if(!track) return;
         console.log('track changed');
         localStorage.setItem('track', JSON.stringify(track));
     }, [track]);
@@ -30,8 +31,9 @@ export const SpotifyProvider = ({ children }) => {
 
     useEffect(() => {
         console.log('playlist changed');
+        if(!playList) return;
         localStorage.setItem('playlist', JSON.stringify(playList));
-        setTracks(playList.songs)
+        setTracks(playList?.songs)
     }, [playList]);
 
     

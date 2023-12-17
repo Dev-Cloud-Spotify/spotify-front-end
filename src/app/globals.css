@@ -90,4 +90,8 @@ input[type="range"] {
   /* bg-gradient-to-b from-[#222a59] 0% to-[#10121c] 30% */
   background: linear-gradient(180deg, #222a59 0%, #10121c 30%, #121212 100%);
 }
+.bg-gradient-artist{
+  /* bg-gradient-to-b from-[#222a59] 0% to-[#10121c] 30% */
+  background: linear-gradient(180deg, #613946 0%, #10121c 30%, #121212 100%);
+}
 

@@ -44,8 +44,8 @@ const SideBarPlayLists = ({ inputSearch }) => {
                     <img src={album.coverImage}
                     className='w-12 h-12 object-cover rounded-md' alt="" />
                     <div className='flex flex-col'>
-                       <span className='font-semibold'>{album.title}</span> 
-                       <span className='flex items-center gap-1 text-gray'>{album.artist?.name} {album.artist?.lastName}</span> 
+                       <span className='font-semibold line-clamp-1'>{album.title}</span> 
+                       <span className='flex items-center gap-1 text-gray line-clamp-1'>{album.artist?.name} {album.artist?.lastName}</span> 
                     </div>
                 </div>
             ))}

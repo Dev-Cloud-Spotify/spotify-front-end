@@ -1,5 +1,5 @@
 import { useSpotifyContext } from '@/context/SpotifyContext';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaHeart, FaPause, FaPlay } from 'react-icons/fa';
 import { HeartIcon } from './utils/Elements';
 import { LuClock3 } from "react-icons/lu";
@@ -9,6 +9,9 @@ import Lottie from 'lottie-react';
 
 const PLaylistSongs = ({ songs, playlist }) => {
 
+    useEffect(() => {
+        console.log('playlistAA', playlist)
+    }, [playlist])
 
     return (
         <div className='flex w-full'>
@@ -67,11 +70,12 @@ const SongRow = ({ song, index, playlist }) => {
     }
 
     const handleSelectTrack = () => {
-        if(track._id === song._id) setIsPlaying(true)
-        if(playlist._id !== playList._id){
+        if(track?._id === song?._id) setIsPlaying(true)
+        if(playlist?._id !== playList?._id){
+            console.log('playlist', playlist)
             setPlayList(playlist);
         }
-        if(track._id !== song._id){
+        if(track?._id !== song?._id){
             setTrack(song);
             setIsPlaying(true)
         }
@@ -85,15 +89,15 @@ const SongRow = ({ song, index, playlist }) => {
         <td className='flex items-center justify-center p-[5px]'>
             {isHover? (
                 <>
-                {song._id === track._id && isPlaying? (
+                {song?._id === track?._id && isPlaying? (
                     <FaPause size={16} className='text-lg text-[#b3b3b3] mt-[14px]' onClick={() => setIsPlaying(false)} />
                 ) : (
                     <FaPlay size={16} className='text-lg text-[#b3b3b3] mt-[14px]' onClick={handleSelectTrack} />
                 )}
                 </>
             ) : (
-            <div className={`text-lg mt-2 ${song._id === track._id && 'text-primary'}`}>
-                {song._id === track._id && isPlaying? <Lottie animationData={Equalizer} style={{width: '20px', height: '20px'}} />
+            <div className={`text-lg mt-2 ${song?._id === track?._id && 'text-primary'}`}>
+                {song?._id === track?._id && isPlaying? <Lottie animationData={Equalizer} style={{width: '20px', height: '20px'}} />
                 : index}
             </div> 
             )}
@@ -102,18 +106,22 @@ const SongRow = ({ song, index, playlist }) => {
             <div className='flex items-center justify-start gap-3'>
                 <img src={song.coverImage} alt={song.title} className='rounded-md h-10 w-10 object-cover' />
                 <div className='flex flex-col justify-start text-left'>
-                    <div className={`font-semibold ${song._id === track._id && 'text-primary'}`}>{song.title}</div>
-                    <div className='text-[#b3b3b3] text-sm'>{song.artist?.name} {song.artist?.lastName}</div>
+                    <div className={`font-semibold line-clamp-1 ${song?._id === track?._id && 'text-primary'}`}>{song.title}</div>
+                    <div className='text-[#b3b3b3] text-sm line-clamp-1'>{song.artist?.name} {song.artist?.lastName}</div>
                 </div>
             </div>
         </td>
-        <td className='p-[5px]'>{song.album?.title || ' - '}</td>
-        <td className='p-[5px]'>{getDate(song.createdAt)}</td>
+        <td className='p-[5px] '>
+           <span className='line-clamp-1'>{song.album?.title || ' - '}</span> 
+        </td>
+        <td className='p-[5px] '>
+           <span className='line-clamp-1'>{getDate(song.createdAt)}</span> 
+        </td>
         <td className='p-[5px]'> 
             <HeartIcon size={20} style='flex justify-center mt-[2px]' />
         </td>
         <td className='text-center p-[5px]'>
-            {getTime(song.duration) || ' - '}
+           <span className=' line-clamp-1'>{getTime(song.duration) || ' - '}</span> 
         </td>
         <td className='p-[5px] flex justify-end items-center'> 
             {isHover ? (
