@@ -207,11 +207,13 @@ const MediaPlayer = () => {
 
   return (
     <div className='max-h-full w-full flex items-center justify-between'>
-      <div className='h-full max-w-1/3 flex justify-start pl-2'>
+      {/* PlayingSong  */}
+      <div className='h-full flex w-1/3 justify-start pl-2'>
         <PlayingSong />
       </div>
 
-    <div className="justify-center max-w-1/3 flex flex-col gap-2 items-center">
+    {/* Media Player */}
+    <div className="flex flex-col gap-2 items-center">
       <div className="w-full flex justify-center items-center mt-2 gap-5">
         <PiShuffleFill size={20} onClick={()=>setIsShuffling(!isShuffling)} className={`cursor-pointer hover:scale-105 ${isShuffling && 'text-primary'}`} />
         <IoPlaySkipBackSharp className='cursor-pointer hover:scale-105' size={20} onClick={handlePrevious} />
@@ -248,7 +250,8 @@ const MediaPlayer = () => {
       </div>
     </div>
 
-    <div className=' h-full max-w-1/3 flex justify-end pr-2'>
+    {/* Audio Settings */}
+    <div className='h-full w-1/3 flex justify-end pr-2'>
       <AudioSettings />
     </div>
 

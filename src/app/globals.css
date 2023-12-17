@@ -16,6 +16,7 @@
   }
 }
 
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -42,6 +43,7 @@ body {
 body {
   scrollbar-width: auto;
   scrollbar-color: gray transparent;
+  /* scrollbar-gutter: stable both-edges; */
 }
 
 body:hover {
@@ -58,7 +60,7 @@ input[type="range"] {
 
   /* Set track height and color with a gradient */
   height: 4px;
-  background-color: #4d4d4d;
+  background-color: transparent;
   border-radius: 2px;
   outline: none;
   position: relative;

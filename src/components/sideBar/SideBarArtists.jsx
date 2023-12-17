@@ -1,7 +1,10 @@
 import artistsAPI from '@/apis/artists.api';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 const SideBarArtists = ({ inputSearch }) => {
+
+    const router = useRouter();
     const [artists, setArtists] = useState([]);
     const [filteredArtists, setFilteredArtists] = useState([]);
 
@@ -41,7 +44,7 @@ const SideBarArtists = ({ inputSearch }) => {
                 <p className='text-gray'>Check spelling or use other keywords and try again</p>
             </div>}
             {filteredArtists?.map((artist)=> (
-                <div key={artist._id} className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a] cursor-pointer'>
+                <div key={artist._id} className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a] cursor-pointer' onClick={() => router.push(`/artist/${artist._id}`)}>
                     <img src={artist.artistImage || getRandomImage()} 
                     className='w-12 h-12 object-cover rounded-full' alt="" />
                     <div className='flex flex-col'>

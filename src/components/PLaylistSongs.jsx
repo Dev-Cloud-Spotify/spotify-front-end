@@ -82,7 +82,7 @@ const SongRow = ({ song, index, playlist }) => {
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
         >
-        <td className='flex items-center justify-center p-[5px] '>
+        <td className='flex items-center justify-center p-[5px]'>
             {isHover? (
                 <>
                 {song._id === track._id && isPlaying? (

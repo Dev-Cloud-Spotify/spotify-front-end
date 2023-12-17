@@ -21,14 +21,23 @@ export const IconPlay = ({ playlist, size, playStyle, pauseStyle }) => {
             setIsPlaying(true);
             return;
         }
-        //else fetch playlist from API and play it
-        playlistsAPI.getPlaylistById(playlist._id)
-        .then(res => {
-            setPlayList(res);
-            setTrack(res.songs[0])
+        if(playlist?.id){
+            //else fetch playlist from API and play it
+            playlistsAPI.getPlaylistById(playlist._id)
+            .then(res => {
+                setPlayList(res);
+                setTrack(res.songs[0])
+                setIsPlaying(true);
+                return;
+            })
+            .catch(err => console.log(err));
+        }
+        else if(playlist?.songs?.length > 0){
+            setPlayList(playlist);
+            setTrack(playlist.songs[0])
             setIsPlaying(true);
-        })
-        .catch(err => console.log(err));
+            return;
+        }
         
     }
 
