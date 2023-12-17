@@ -4,7 +4,8 @@ import { FaHeart, FaPause, FaPlay } from 'react-icons/fa';
 import { HeartIcon } from './utils/Elements';
 import { LuClock3 } from "react-icons/lu";
 import { RxDotsHorizontal } from "react-icons/rx";
-
+import Equalizer from '../assets/lotties/Equalizer.json';
+import Lottie from 'lottie-react';
 
 const PLaylistSongs = ({ songs, playlist }) => {
 
@@ -91,7 +92,10 @@ const SongRow = ({ song, index, playlist }) => {
                 )}
                 </>
             ) : (
-            <div className={`text-lg mt-2 ${song._id === track._id && 'text-primary'}`}>{index}</div> 
+            <div className={`text-lg mt-2 ${song._id === track._id && 'text-primary'}`}>
+                {song._id === track._id && isPlaying? <Lottie animationData={Equalizer} style={{width: '20px', height: '20px'}} />
+                : index}
+            </div> 
             )}
         </td>
         <td className='p-[5px]'>
