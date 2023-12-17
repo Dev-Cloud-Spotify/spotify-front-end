@@ -1,6 +1,10 @@
 import { useSpotifyContext } from '@/context/SpotifyContext';
 import React, { useState } from 'react';
 import { FaHeart, FaPause, FaPlay } from 'react-icons/fa';
+import { HeartIcon } from './utils/Elements';
+import { LuClock3 } from "react-icons/lu";
+import { RxDotsHorizontal } from "react-icons/rx";
+
 
 const PLaylistSongs = ({ songs, playlist }) => {
 
@@ -15,18 +19,19 @@ const PLaylistSongs = ({ songs, playlist }) => {
                         <th className='text-left'>Album</th>
                         <th className='text-left'>Date</th>
                         <th className='text-right'> {' '} </th>
-                        <th className='text-right'>Time</th>
+                        <th className='flex justify-center'> <LuClock3/> </th>
+                        <th className='text-end'> {' '} </th>
                     </tr>
                 </thead>
                 {/* divider  */}
                 
                 <tbody>
                     <tr>
-                        <td colSpan='6' className='border-b-2 border-gray-600'></td>
+                        <td colSpan='7' className='border-b-2 border-gray-600'></td>
                     </tr>
                     {/* Empty row for space */}
                     <tr>
-                        <td colSpan='6' className='h-4'></td>
+                        <td colSpan='7' className='h-4'></td>
                     </tr>
                     {songs?.map((song, index) => (
                         <SongRow key={`${song._id}-${index}`} song={song} index={index+1} playlist={playlist} />
@@ -72,17 +77,17 @@ const SongRow = ({ song, index, playlist }) => {
     }
     
     return (
-        <tr className='hover:bg-[#2a2a2a] hover:bg-opacity-90 rounded-md cursor-pointer' 
+        <tr className='hover:bg-[#2a2a2a] hover:bg-opacity-90 rounded-md cursor-pointer items-center w-full' 
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
         >
-        <td className='flex items-center justify-center  h-full p-[5px]'>
+        <td className='flex items-center justify-center p-[5px] '>
             {isHover? (
                 <>
                 {song._id === track._id && isPlaying? (
-                    <FaPause size={16} className='text-lg mt-[14px] text-[#b3b3b3]' onClick={() => setIsPlaying(false)} />
+                    <FaPause size={16} className='text-lg text-[#b3b3b3] mt-[14px]' onClick={() => setIsPlaying(false)} />
                 ) : (
-                    <FaPlay size={16} className='text-lg mt-[14px] text-[#b3b3b3]' onClick={handleSelectTrack} />
+                    <FaPlay size={16} className='text-lg text-[#b3b3b3] mt-[14px]' onClick={handleSelectTrack} />
                 )}
                 </>
             ) : (
@@ -100,11 +105,20 @@ const SongRow = ({ song, index, playlist }) => {
         </td>
         <td className='p-[5px]'>{song.album?.title || ' - '}</td>
         <td className='p-[5px]'>{getDate(song.createdAt)}</td>
-        <td className='flex justify-end items-center'> 
-            <FaHeart size={20} className='text-primary'/> 
+        <td className='p-[5px]'> 
+            <HeartIcon size={20} style='flex justify-center mt-[2px]' />
         </td>
-        <td className='text-end p-[5px]'>
+        <td className='text-center p-[5px]'>
             {getTime(song.duration) || ' - '}
+        </td>
+        <td className='p-[5px] flex justify-end items-center'> 
+            {isHover ? (
+                <RxDotsHorizontal size={20} className='text-[#b3b3b3]' />
+            ) : (
+                <div className='w-8'> 
+                    <br />
+                </div>
+            )}
         </td>
     </tr>
     )

@@ -1,7 +1,10 @@
 import playlistsAPI from '@/apis/playLists.api';
 import { useSpotifyContext } from '@/context/SpotifyContext';
-import React from 'react';
+import Lottie from 'lottie-react';
+import React, { useState } from 'react';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6';
+import HeartAnimation from '../../assets/lotties/HeartAnimation.json';
 
 export const IconPlay = ({ playlist, size, playStyle, pauseStyle }) => {
 
@@ -44,5 +47,33 @@ export const IconPlay = ({ playlist, size, playStyle, pauseStyle }) => {
                 <FaCirclePlay size={size} className={`text-primary bg-black rounded-full cursor-pointer transition-all hover:scale-105 ${playStyle}`} onClick={(e) => handleSelectPlaylist(e)} />
             )}
         </>
+    );
+}
+
+
+export const HeartIcon = ({  size, style }) => {
+
+    const [liked, setLiked] = useState(false);
+
+    const handleLiked = (e) => {
+        e.stopPropagation();
+        setLiked(!liked);
+    }
+
+    //api call to like song
+    
+    return (
+        <div className={`cursor-pointer items-center flex justify-center w-10 h-10 ${style}`} onClick={handleLiked}>
+        {liked ? (
+          <Lottie
+            animationData={HeartAnimation}
+            loop={false}
+            autoplay={true} // Autoplay when liked is true
+            initialSegment={[10, 80]} // Only play first 30 frames when liked is false
+          />
+        ): (
+          <FaRegHeart size={18} className={`text-white`} />
+        )}
+      </div>
     );
 }
