@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
             {children}
           </div>
 
-          <div className="max-h-[8%]">
+          <div className="max-h-[8%] z-50 bg-black">
             <MediaPlayer />
           </div>
       

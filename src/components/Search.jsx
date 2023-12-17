@@ -43,7 +43,7 @@ const Search = () => {
   
 
   return (
-    <>
+    <div className='h-full max-h-full w-full'>
       <input
         onChange={(e) => setInput(e.target.value)}
         value={input}
@@ -52,24 +52,23 @@ const Search = () => {
         placeholder="Search..."
       />
       {console.log('Rendered Data:', data)}
-      <div>
+      <div className='max-h-[95%] overflow-auto'>
         {isLoading ? (
           <div className="flex justify-center items-center">
             <Lottie animationData={lottieResult} />
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-4 items-center justify-center pt-4">
-            {data.map((item, index) => (
+          <div className="flex flex-wrap items-center justify-start gap-4 w-full pt-8 ">
+            {data.map((song, index) => (
               <SearchedSongCard
                 key={index}
-                title={item.title}
-                coverImage={item.coverImage}
+                song={song}
               />
             ))}
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

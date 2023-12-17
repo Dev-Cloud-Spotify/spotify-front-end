@@ -4,7 +4,7 @@ import React from 'react';
 
 export default function page() {
   return (
-    <div>
+    <div className='w-full h-full rounded-md p-6 bg-background'>
       <Search />
     </div>
   );
