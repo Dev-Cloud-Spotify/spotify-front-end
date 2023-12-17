@@ -19,10 +19,9 @@ const Search = () => {
       clearTimeout(callRef.current);
       callRef.current = setTimeout(() => {
         songsAPI
-          .getSongs(input)
+          .getSongs(input.toLocaleLowerCase())
           .then((res) => {
             setIsLoading(false);
-            console.log(res);
             setData(res);
             if (res.length === 0) {
               setLottieResult(noResultLottie);
@@ -40,6 +39,21 @@ const Search = () => {
       setData([]);
     }
   }, [input]);
+
+  //if space is pressed, stop propagation to prevent spacebar from playing/pausing music
+  const handleKeyDown = (e) => {
+    if (e.key === ' ' && e.target.tagName == 'INPUT' || e.target.tagName == 'TEXTAREA') {
+      e.stopPropagation();
+    }
+  };
+  
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+  
 
   return (
     <>

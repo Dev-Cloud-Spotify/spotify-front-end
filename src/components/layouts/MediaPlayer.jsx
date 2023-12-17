@@ -133,7 +133,8 @@ const MediaPlayer = () => {
   //handle start/pause with spacebar 
   useEffect(() => {
     const handleKeyUp = (e) => {
-      if (e.key === ' ') {
+      //toggle the play/pause if the spacebar is pressed and the target is not an input
+      if (e.key === ' ' && e.target.tagName !== 'INPUT') {
         handlePlayPause();
       }
     };
