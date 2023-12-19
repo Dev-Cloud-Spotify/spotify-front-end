@@ -43,6 +43,15 @@ const songsAPI = {
         console.log(error);
       });
   },
+
+  incrementListens: (id) => {
+    return axios
+      .get(`${API_URL}/incrementListens/${id}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error);
+      });
+  },
 };
 
 export default songsAPI;

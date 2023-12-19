@@ -27,7 +27,7 @@ const PlayLists = () => {
     return (
         <div className='p-6 h-full'>
            <span className='text-2xl font-bold'>Concu pour Vous </span>
-           <div className='pt-2 flex flex-wrap gap-4 justify-start'>
+           <div className='pt-2 flex flex-wrap gap-4 justify-start pb-4'>
             {/* PlayLists  */}
             {playlists?.map((playlist, index) => (
                 <PlayListCard key={`${playlist._id}-${index}`} playlist={playlist} />
@@ -40,11 +40,14 @@ const PlayLists = () => {
 
 const PlayListCard = ({ playlist }) => {
 
-    const { playList, setPlayList, isPlaying, setIsPlaying } = useSpotifyContext();
     const router = useRouter();
 
     //handle cover image
     const coverImage = () => {
+        if(playlist.title == 'Liked Songs') return (
+            <img src="https://i1.sndcdn.com/artworks-y6qitUuZoS6y8LQo-5s2pPA-t500x500.jpg" 
+            className='w-36 h-36 object-cover rounded-md' alt="" />
+        )
         if(!playlist.songs?.length > 0) return (
             <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/spotify-style-illustration-album-art-2020-design-template-ff72ffd1b198e4a94ee8c58cceb1da19_screen.jpg?ts=1600257159" 
             className='w-36 h-36 object-cover rounded-md' alt="" />
@@ -62,27 +65,7 @@ const PlayListCard = ({ playlist }) => {
        )
     }
 
-    //handle select playlist
-    const handleSelectPlaylist = async (e) => {
-        //prevent default
-        e.stopPropagation();
-        try{
-            const playlistWithSongs = await playlistsAPI.getPlaylistById(playlist._id);
-            setPlayList(playlistWithSongs);
-            setIsPlaying(true);
-        }
-        catch(error){
-            console.log(error)
-        }
-    }
-
-    //handle pause audio
-    const handlePauseAudio = (e) => {
-        //prevent default behavior
-        e.stopPropagation();
-        setIsPlaying(false);
-    }
-
+    
     return (
         <div className='bg-[#161616] hover:bg-[#252525] p-4 flex flex-col gap-1 rounded-md w-44 transition-all group shadow-xl'
         onClick={()=> router.push(`/playlist/${playlist._id}`)}>

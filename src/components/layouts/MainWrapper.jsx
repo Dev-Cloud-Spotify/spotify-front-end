@@ -5,7 +5,7 @@ import PlayLists from '../PlayLists';
 
 const MainWrapper = () => {
     return (
-        <div className='w-full h-full rounded-md bg-[#312528] max-h-full overflow-auto'>
+        <div className='w-full h-full rounded-md bg-[#121212] max-h-full bg overflow-auto'>
             <div className='bg-gradient-to-b from-[#474747] to-[#121212] w-full h-[260px]'>
                 <WelcomePlaylists/>
             </div>

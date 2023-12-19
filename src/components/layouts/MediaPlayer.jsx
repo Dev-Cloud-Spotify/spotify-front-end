@@ -10,7 +10,7 @@ import PlayingSong from '../PlayingSong';
 import AudioSettings from '../AudioSettings';
 
 import { useSpotifyContext } from '@/context/SpotifyContext';
-import playlistsAPI from '@/apis/playLists.api';
+import songsAPI from '@/apis/songs.api';
 
 
 const MediaPlayer = () => {
@@ -21,13 +21,12 @@ const MediaPlayer = () => {
   const [isLooping, setIsLooping] = useState(false);
   const [currentAudioTime, setCurrentAudioTime] = useState(0);
   const [selectedTrackCFurl, setSelectedTrackCFurl] = useState('');
-  const isInitialRender = useRef(true);
-
-
+  const [songIsListenning, setSongIsListenning] = useState(false);
 
   //handle track change 
   useEffect(() => {
     const audio = audioRef.current;
+    setSongIsListenning(false)
 
     if (!track?.CFurl) return;
 
@@ -53,25 +52,6 @@ const MediaPlayer = () => {
   }, [track?.CFurl, playList]);
 
 
-  //fetch songs from API
-  useEffect(() => {
-
-    // const getsongsAPI = async () => {
-    //   try {
-    //     const myResponse = await playlistsAPI.getAllSongsPlaylist()
-    //       setPlayList(myResponse)
-    //       setIsPlaying(false);
-    //       //set the first to be mounted right after the fetch is completed to avoid that fucking undefined error
-    //       setSelectedTrackCFurl(myResponse.songs[0]?.CFurl);
-    //       setTrack(myResponse.songs[0])
-    //       setTracks(myResponse.songs)
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // };
-    // getsongsAPI();
-  }, []);
-
   //playlist change
   useEffect(() => {
     if(!tracks?.length > 0) return;
@@ -82,11 +62,11 @@ const MediaPlayer = () => {
   // handle pause
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
-    setCurrentAudioTime(0);
   };
 
   //handle next track
   const handleNext = () => {
+    setSongIsListenning(false)
     const currentIndex = tracks.findIndex(
       (track) => track.CFurl === selectedTrackCFurl
     );
@@ -100,6 +80,7 @@ const MediaPlayer = () => {
 
   //handlePrevious Track
   const handlePrevious = () => {
+    setSongIsListenning(false)
     //replay track at start if already started
     if(audioRef.current.currentTime >= 4) {
       audioRef.current.currentTime = 0
@@ -120,7 +101,7 @@ const MediaPlayer = () => {
 
   //handle audio time update
   useEffect(() => {
-    //const audio = audioRef.current;
+
     const handleTimeUpdate = () => {
       setCurrentAudioTime(audioRef.current.currentTime);
     };
@@ -159,10 +140,25 @@ const MediaPlayer = () => {
       audioRef.current.pause();
     }
 
-    if (isPlaying && currentAudioTime >= audio.duration) {
-      setCurrentAudioTime(0);
-      handleNext();
-      // setIsPlaying(false);
+    if (isPlaying && audioRef.current.currentTime >= audio.duration-1) {
+      console.log('end of track')
+      // setCurrentAudioTime(0);
+      if (isLooping) {
+        console.log('looping')
+        console.log('currentAudioTime', currentAudioTime)
+        handlePrevious();
+      }
+      else {
+        console.log('not looping')
+        handleNext();
+      } 
+    }
+
+    //when audio is listenning for at least 10s, update the listenning count
+    if(isPlaying && currentAudioTime >= 10 && !songIsListenning) {
+      console.log('incrementing listens')
+      setSongIsListenning(true)
+      songsAPI.incrementListens(track._id)
     }
 
   }, [isPlaying, audioRef.current.currentTime]);
