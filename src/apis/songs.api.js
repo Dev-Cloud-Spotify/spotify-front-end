@@ -34,6 +34,15 @@ const songsAPI = {
         console.log(error);
       });
   },
+
+  likeSong: (id) => {
+    return axios
+      .get(`${API_URL}/likeSong/${id}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error);
+      });
+  },
 };
 
 export default songsAPI;

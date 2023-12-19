@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6';
 import HeartAnimation from '../../assets/lotties/HeartAnimation.json';
+import songsAPI from '@/apis/songs.api';
 
 export const IconPlay = ({ playlist, size, playStyle, pauseStyle }) => {
 
@@ -60,19 +61,27 @@ export const IconPlay = ({ playlist, size, playStyle, pauseStyle }) => {
 }
 
 
-export const HeartIcon = ({  size, style }) => {
+export const HeartIcon = ({ song, size, style }) => {
 
-    const [liked, setLiked] = useState(false);
-
-    const handleLiked = (e) => {
-        e.stopPropagation();
-        setLiked(!liked);
-    }
+    const [liked, setLiked] = useState(song?.liked);
 
     //api call to like song
+    const handleLikeSong = async (songId) => {
+        const old = liked;
+        setLiked(!old);
+        try {
+            const res = await songsAPI.likeSong(songId);
+            console.log('res', res);
+            if(res) setLiked(res.liked);
+            else setLiked(old);
+        } catch (error) {
+            console.log('error liked');
+            setLiked(old);
+        }
+    }
     
     return (
-        <div className={`cursor-pointer items-center flex justify-center w-10 h-10 ${style}`} onClick={handleLiked}>
+        <div className={`cursor-pointer items-center flex justify-center w-10 h-10 ${style}`} onClick={() => handleLikeSong(song?._id)}>
         {liked ? (
           <Lottie
             animationData={HeartAnimation}

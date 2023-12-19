@@ -9,10 +9,6 @@ import Lottie from 'lottie-react';
 
 const PLaylistSongs = ({ songs, playlist }) => {
 
-    useEffect(() => {
-        console.log('playlistAA', playlist)
-    }, [playlist])
-
     return (
         <div className='flex w-full'>
             <table className='w-full'>
@@ -118,7 +114,7 @@ const SongRow = ({ song, index, playlist }) => {
            <span className='line-clamp-1'>{getDate(song.createdAt)}</span> 
         </td>
         <td className='p-[5px]'> 
-            <HeartIcon size={20} style='flex justify-center mt-[2px]' />
+            <HeartIcon song={song} size={20} style='flex justify-center mt-[2px]' />
         </td>
         <td className='text-center p-[5px]'>
            <span className=' line-clamp-1'>{getTime(song.duration) || ' - '}</span> 

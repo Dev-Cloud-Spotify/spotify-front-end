@@ -6,8 +6,6 @@ import { HeartIcon } from './utils/Elements';
 const PlayingSong = () => {
 
     const { track } = useSpotifyContext();
-    const [liked, setLiked] = useState(false);
-    
     
     return (
         <div className='flex items-center gap-4 justify-start max-w-full'>
@@ -20,7 +18,7 @@ const PlayingSong = () => {
             </span>
                 <span className='text-xs text-[#a7a7a7]'>{track?.artist?.name} {track?.artist?.lastName}</span>
             </div>
-            <HeartIcon liked={liked} size={20} style='text-primary' setLiked={setLiked} />
+            <HeartIcon song={track} size={20} style='text-primary' />
             </>
            )}
 
