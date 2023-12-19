@@ -1,10 +1,14 @@
 import albumsAPI from '@/apis/albums.api';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 
-const SideBarPlayLists = ({ inputSearch }) => {
+const SideBarAlbums = ({ inputSearch }) => {
+
+    const router = useRouter()
     const [albums, setAlbums] = useState([]);
     const [filteredAlbums, setFilteredAlbums] = useState([]);
+    const [selectedAlbum, setSelectedAlbum] = useState(null);
 
     useEffect(() => {
         fetchAlbums();
@@ -33,6 +37,12 @@ const SideBarPlayLists = ({ inputSearch }) => {
         }
     }, [inputSearch, albums]);
 
+    const handleSelectAlbum = (album) => {
+        setSelectedAlbum(album._id)
+        router.push(`/album/${album._id}`)
+    };
+        
+
     return (
         <div className='h-[92%] overflow-auto'>
             {filteredAlbums.length === 0 && <div className='text-center h-full flex flex-col justify-center'>
@@ -40,7 +50,7 @@ const SideBarPlayLists = ({ inputSearch }) => {
                 <p className='text-gray'>Check spelling or use other keywords and try again</p>
             </div>}
             {filteredAlbums?.map((album)=> (
-                <div key={album._id} className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a] cursor-pointer'>
+                <div key={album._id} className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a] cursor-pointer' onClick={() =>handleSelectAlbum(album)}>
                     <img src={album.coverImage}
                     className='w-12 h-12 object-cover rounded-md' alt="" />
                     <div className='flex flex-col'>
@@ -53,4 +63,4 @@ const SideBarPlayLists = ({ inputSearch }) => {
     );
 }
 
-export default SideBarPlayLists;
+export default SideBarAlbums;

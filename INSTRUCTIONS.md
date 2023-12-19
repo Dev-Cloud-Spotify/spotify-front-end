@@ -10,7 +10,7 @@
         
         
       TODO:  1. fonction repeat la playlist
-      TODO:  2. fonction repeat one song
+        2. fonction repeat one song
         3. skip les musiques
         4. fonction random dans la playlist
         5. gestion du son via barre

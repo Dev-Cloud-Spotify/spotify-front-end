@@ -50,7 +50,7 @@ export const SpotifyProvider = ({ children }) => {
             playList,
             setPlayList,
             isPlaying,
-            setIsPlaying
+            setIsPlaying,
         }}
         >
         {children}

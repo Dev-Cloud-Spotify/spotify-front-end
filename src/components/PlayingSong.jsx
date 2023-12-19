@@ -6,7 +6,11 @@ import { HeartIcon } from './utils/Elements';
 const PlayingSong = () => {
 
     const { track } = useSpotifyContext();
-    
+
+    useEffect(() => {
+        console.log('trackkkk', track);
+    }, [track]);
+
     return (
         <div className='flex items-center gap-4 justify-start max-w-full'>
             {track?.title && (

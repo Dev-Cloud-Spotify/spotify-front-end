@@ -68,7 +68,6 @@ const SongRow = ({ song, index, playlist }) => {
     const handleSelectTrack = () => {
         if(track?._id === song?._id) setIsPlaying(true)
         if(playlist?._id !== playList?._id){
-            console.log('playlist', playlist)
             setPlayList(playlist);
         }
         if(track?._id !== song?._id){

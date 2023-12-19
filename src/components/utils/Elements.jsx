@@ -1,7 +1,7 @@
 import playlistsAPI from '@/apis/playLists.api';
 import { useSpotifyContext } from '@/context/SpotifyContext';
 import Lottie from 'lottie-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { FaCirclePause, FaCirclePlay } from 'react-icons/fa6';
 import HeartAnimation from '../../assets/lotties/HeartAnimation.json';
@@ -65,14 +65,19 @@ export const HeartIcon = ({ song, size, style }) => {
 
     const [liked, setLiked] = useState(song?.liked);
 
+    useEffect(() => {
+        setLiked(song?.liked);
+    }, [song]);
+
     //api call to like song
     const handleLikeSong = async (songId) => {
         const old = liked;
         setLiked(!old);
         try {
             const res = await songsAPI.likeSong(songId);
-            console.log('res', res);
-            if(res) setLiked(res.liked);
+            if(res){
+                setLiked(res.liked);
+            } 
             else setLiked(old);
         } catch (error) {
             console.log('error liked');

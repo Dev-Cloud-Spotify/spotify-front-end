@@ -6,6 +6,9 @@ import { FaCircle } from 'react-icons/fa';
 const PlaylistHeader = ({ playlist }) => {
 
     const coverImage = () => {
+        if(playlist?.coverImage) return (
+            <img src={playlist?.coverImage} className='w-60 h-60 object-cover rounded-md' alt="" />
+        )
         if(playlist?.title == 'Liked Songs') return (
             <img src="https://i1.sndcdn.com/artworks-y6qitUuZoS6y8LQo-5s2pPA-t500x500.jpg" 
             className='w-60 h-60 object-cover rounded-md' alt="" />

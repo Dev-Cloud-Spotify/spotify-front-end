@@ -136,6 +136,7 @@ const MediaPlayer = () => {
     const audio = audioRef.current;
     if (isPlaying) {
       audioRef.current.play();
+      document.title = track?.title;
     } else {
       audioRef.current.pause();
     }
