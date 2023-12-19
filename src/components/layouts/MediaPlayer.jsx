@@ -230,7 +230,7 @@ const MediaPlayer = () => {
           type="range"
           value={audioRef.current.currentTime}
           min="0"
-          max={audioRef.current.duration || 0}
+          max={audioRef.current.duration || track?.duration}
           style={{
             background: calculateGradient(),
             overflow: isHovered ? 'visible' : 'hidden',
@@ -244,7 +244,7 @@ const MediaPlayer = () => {
           onMouseOut={() => setIsHovered(false)}
           className="w-[620px] transition-all"
         />
-        <span className="text-xs text[#a7a7a7]">{formatTime(audioRef.current.duration)}</span>
+        <span className="text-xs text[#a7a7a7]">{formatTime(audioRef.current.duration || track?.duration) }</span>
       </div>
     </div>
 
