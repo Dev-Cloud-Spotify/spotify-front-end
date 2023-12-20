@@ -9,12 +9,11 @@ import { useSocketContext } from '@/context/SocketContext';
 
 const AudioSettings = () => {
 
-    const { current: socketRef } = useSocketContext();
+    const { current: socketRef, shareListenning, setShareListenning } = useSocketContext();
     const { volume, setVolume } = useSpotifyContext();
     const [lastVolume, setLastVolume] = useState(20); 
     const [isMuted, setIsMuted] = useState(false);
     const [isHovered, setIsHovered] = useState(false)
-    const [shareListenning, setShareListenning] = useState(false);
     const isInitialRender = useRef(true);
 
     //Mute
@@ -23,7 +22,7 @@ const AudioSettings = () => {
     }
 
     // Update volume if muted
-useEffect(() => {
+    useEffect(() => {
     if (isInitialRender.current) {
       isInitialRender.current = false;
       return; // Skip the effect on initial render
@@ -49,7 +48,8 @@ useEffect(() => {
 
     return (
         <div className='flex items-center justify-center gap-4'>
-            <BsMusicPlayer size={18} className={`cursor-pointer text-gray-500 ${shareListenning && 'text-primary'}`} onClick={()=>setShareListenning(!shareListenning)} />
+            <BsMusicPlayer size={18} className={`cursor-pointer text-gray-500 ${shareListenning && 'text-primary'}`} 
+                onClick={()=>setShareListenning(!shareListenning)} />
             <FaList size={18} className='text-gray-500 cursor-pointer' />
             <div 
                 onMouseOver={() => setIsHovered(true)}

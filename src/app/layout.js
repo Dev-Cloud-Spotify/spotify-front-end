@@ -1,18 +1,15 @@
 'use client';
-import { Inter } from 'next/font/google'
 import './globals.css'
-import { SpotifyProvider } from '@/context/SpotifyContext'
 import SideBar from '@/components/layouts/SideBar';
 import MediaPlayer from '@/components/layouts/MediaPlayer';
+import { SpotifyProvider } from '@/context/SpotifyContext'
 import { SocketProvider } from '@/context/SocketContext';
 
-const inter = Inter({ subsets: ['latin'] })
 
-
-export default function RootLayout({ children }) {
+export default function Layout({ children }) {
   return (
-    <html lang="en">
-        <body className={inter.className}>
+    <html lang="fr">
+        <body>
           <SpotifyProvider>
             <SocketProvider>
                 <main className='w-screen h-screen overflow-hidden flex flex-col gap-1 p-2'>

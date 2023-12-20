@@ -1,11 +1,12 @@
 // SocketContext.js
-import { createContext, useContext, useEffect, useRef } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 
 const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
   const socketRef = useRef();
+  const [shareListenning, setShareListenning] = useState(false);
 
   useEffect(() => {
     // Connect to the WebSocket server

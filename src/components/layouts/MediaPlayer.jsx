@@ -33,7 +33,7 @@ const MediaPlayer = () => {
     if (socketRef && track) {
       socketRef.emit('changeTrack', { track });
     }
-  }, [socketRef, track.CFurl]);
+  }, [socketRef, track?.CFurl]);
 
   useEffect(() => {
     console.log('Listening for testEvent');
