@@ -19,7 +19,11 @@ export const SocketProvider = ({ children }) => {
   }, []);
 
   return (
-    <SocketContext.Provider value={socketRef}>
+    <SocketContext.Provider value={{
+      socketRef,
+      shareListenning,
+      setShareListenning
+    }}>
       {children}
     </SocketContext.Provider>
   );
