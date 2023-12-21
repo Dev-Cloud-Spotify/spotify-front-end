@@ -20,8 +20,8 @@
             
             
  2. Faire un systeme d’ecoute en simultané
- TODO:   1. generer une url qui connectera les utilisateur qui clic a la lecture
-  TODO:  2. la lecture est la meme sur tout les appareil, si l’utilisateur A met pause, cela affectera tout les autres utilisateur, utiliser les web-socket pour cela
+   1. generer une url qui connectera les utilisateur qui clic a la lecture
+   2. la lecture est la meme sur tout les appareil, si l’utilisateur A met pause, cela affectera tout les autres utilisateur, utiliser les web-socket pour cela
 3. Créer des playlist dynamique :
    TODO: 1. Playlist dernières écoutes :
     TODO:    1. affiche les 20 dernières musique du plus recent au plus ancien
