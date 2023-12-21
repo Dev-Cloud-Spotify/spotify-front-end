@@ -4,10 +4,13 @@ import { MdOpenInFull } from "react-icons/md";
 import { SlVolume1, SlVolume2, SlVolumeOff } from "react-icons/sl";
 import { IoVolumeHighOutline } from "react-icons/io5";
 import { useSpotifyContext } from '@/context/SpotifyContext';
+import { BsMusicPlayer } from "react-icons/bs";
+import { useSocketContext } from '@/context/SocketContext';
 
 const AudioSettings = () => {
 
-    const { volume, setVolume, audioRef } = useSpotifyContext();
+    const { current: socketRef, shareListenning, setShareListenning } = useSocketContext();
+    const { volume, setVolume } = useSpotifyContext();
     const [lastVolume, setLastVolume] = useState(20); 
     const [isMuted, setIsMuted] = useState(false);
     const [isHovered, setIsHovered] = useState(false)
@@ -19,7 +22,7 @@ const AudioSettings = () => {
     }
 
     // Update volume if muted
-useEffect(() => {
+    useEffect(() => {
     if (isInitialRender.current) {
       isInitialRender.current = false;
       return; // Skip the effect on initial render
@@ -38,13 +41,15 @@ useEffect(() => {
         setVolume(e.target.value);
         if (isMuted) {
             setIsMuted(false);
-        }
-        
+        } 
     }
 
+    
 
     return (
         <div className='flex items-center justify-center gap-4'>
+            <BsMusicPlayer size={18} className={`cursor-pointer text-gray-500 ${shareListenning && 'text-primary'}`} 
+                onClick={()=>setShareListenning(!shareListenning)} />
             <FaList size={18} className='text-gray-500 cursor-pointer' />
             <div 
                 onMouseOver={() => setIsHovered(true)}

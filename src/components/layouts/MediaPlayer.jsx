@@ -12,16 +12,47 @@ import AudioSettings from '../AudioSettings';
 import { useSpotifyContext } from '@/context/SpotifyContext';
 import songsAPI from '@/apis/songs.api';
 
+import { useSocketContext } from '@/context/SocketContext';
 
 const MediaPlayer = () => {
 
-  const { track, setTrack, tracks, setTracks, audioRef, setPlayList, isPlaying, setIsPlaying, playList} = useSpotifyContext();
+  const { current: socketRef } = useSocketContext();
+  const { track, setTrack, tracks, setTracks, audioRef, isPlaying, setIsPlaying, playList} = useSpotifyContext();
+
   const [isHovered, setIsHovered] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
   const [currentAudioTime, setCurrentAudioTime] = useState(0);
   const [selectedTrackCFurl, setSelectedTrackCFurl] = useState('');
   const [songIsListenning, setSongIsListenning] = useState(false);
+
+
+  
+
+  useEffect(() => {
+    if (socketRef && track) {
+      socketRef.emit('changeTrack', { track });
+    }
+  }, [socketRef, track?.CFurl]);
+
+  useEffect(() => {
+    console.log('Listening for testEvent');
+  
+    // Listen for the "testEvent" event from the server
+    console.log('socketRef', socketRef);
+    if (!socketRef) return;
+    socketRef.on('changeTrack', (data) => {
+      console.log('Received changeTrack:', data);
+  
+      setTrack(data.track);
+    });
+  
+    return () => {
+      // Clean up event listener on component unmount
+      socketRef.off('changeTrack');
+    };
+  }, [socketRef]);
+
 
   //handle track change 
   useEffect(() => {

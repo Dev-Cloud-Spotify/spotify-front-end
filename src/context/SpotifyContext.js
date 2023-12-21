@@ -36,7 +36,6 @@ export const SpotifyProvider = ({ children }) => {
         setTracks(playList?.songs)
     }, [playList]);
 
-    
     return (
         <SpotifyContext.Provider
         value={{
