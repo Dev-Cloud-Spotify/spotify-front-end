@@ -8,7 +8,7 @@ const PlayingSong = () => {
     const { track } = useSpotifyContext();
 
     useEffect(() => {
-        console.log('trackkkk', track);
+        // console.log('trackkkk', track);
     }, [track]);
 
     return (

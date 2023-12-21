@@ -9,7 +9,7 @@ import { useSocketContext } from '@/context/SocketContext';
 
 const AudioSettings = () => {
 
-    const { current: socketRef, shareListenning, setShareListenning } = useSocketContext();
+    const { shareListenning, setShareListenning } = useSocketContext();
     const { volume, setVolume } = useSpotifyContext();
     const [lastVolume, setLastVolume] = useState(20); 
     const [isMuted, setIsMuted] = useState(false);

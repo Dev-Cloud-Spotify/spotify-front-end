@@ -16,8 +16,8 @@ import { useSocketContext } from '@/context/SocketContext';
 
 const MediaPlayer = () => {
 
-  const { current: socketRef } = useSocketContext();
-  const { track, setTrack, tracks, setTracks, audioRef, isPlaying, setIsPlaying, playList} = useSpotifyContext();
+  const { socketRef, shareListenning } = useSocketContext();
+  const { track, setTrack, tracks, setTracks, audioRef, isPlaying, setIsPlaying, playList, setPlayList} = useSpotifyContext();
 
   const [isHovered, setIsHovered] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
@@ -30,28 +30,60 @@ const MediaPlayer = () => {
   
 
   useEffect(() => {
-    if (socketRef && track) {
-      socketRef.emit('changeTrack', { track });
+    if(!shareListenning) return;
+    console.log('EMITING')
+    if (socketRef?.current && track) {
+      socketRef.current.emit('changePLaylist', { playList });
+      socketRef.current.emit('changeTrack', { track });
     }
-  }, [socketRef, track?.CFurl]);
+  }, [socketRef?.current, track?.CFurl]);
 
   useEffect(() => {
-    console.log('Listening for testEvent');
+
+    if(!shareListenning) return;
+    console.log('LISTENNING');
   
-    // Listen for the "testEvent" event from the server
-    console.log('socketRef', socketRef);
-    if (!socketRef) return;
-    socketRef.on('changeTrack', (data) => {
+    // Listen for playlist changes
+    if (!socketRef?.current) return;
+    socketRef?.current.on('changePLaylist', (data) => {
+      console.log('Received changePLaylist:', data);
+  
+      setPlayList(data.playlist);
+    });
+    // Listen for track changes
+    socketRef?.current.on('changeTrack', (data) => {
       console.log('Received changeTrack:', data);
   
       setTrack(data.track);
     });
+    // Listen for play/stop changes
+    socketRef?.current.on('changeIsPlaying', (data) => {
+      console.log('Received changeIsPlaying:', data);
+  
+      setIsPlaying(data.isPlaying);
+    });
+    // Listen for play/start changes
+    socketRef?.current.on('changeTime', (data) => {
+      console.log('Received changeTime:', data);
+  
+      setCurrentAudioTime(data.newTime);
+      audioRef.current.currentTime = data.newTime;
+    });
   
     return () => {
       // Clean up event listener on component unmount
-      socketRef.off('changeTrack');
+      socketRef?.current.off('changeTrack');
     };
-  }, [socketRef]);
+  }, [socketRef.current, shareListenning]);
+
+  useEffect(() => {
+    if(!shareListenning) return;
+    console.log('EMITING')
+    if (socketRef?.current && track) {
+      socketRef?.current.emit('changeIsPlaying', { isPlaying });
+    }
+    isPlaying ? audioRef.current.play() : audioRef.current.pause();
+  },[isPlaying]);
 
 
   //handle track change 
@@ -80,6 +112,12 @@ const MediaPlayer = () => {
       audioRef.current.play();
     }
 
+    // if(!shareListenning) return;
+    // console.log('EMITING')
+    // if (socketRef?.current && track) {
+    //   socketRef?.current.emit('changeIsPlaying', { isPlaying });
+    // }
+
   }, [track?.CFurl, playList]);
 
 
@@ -93,6 +131,7 @@ const MediaPlayer = () => {
   // handle pause
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
+    
   };
 
   //handle next track
@@ -193,6 +232,8 @@ const MediaPlayer = () => {
       songsAPI.incrementListens(track._id)
     }
 
+    
+
   }, [isPlaying, audioRef.current.currentTime]);
 
   //display time in minutes and seconds
@@ -210,6 +251,17 @@ const MediaPlayer = () => {
   //handle shuffle
   const randomTrack = () => {
     setTracks(tracks.sort(() => Math.random() - 0.5));
+  };
+
+  //handle change time
+  const handleChangeTime = (e) => {
+    const newTime = parseFloat(e.target.value);
+    setCurrentAudioTime(newTime);
+    audioRef.current.currentTime = newTime;
+
+    if (socketRef?.current && track) {
+      socketRef?.current.emit('changeTime', { newTime });
+    }
   };
 
   //handle shuffle
@@ -267,11 +319,7 @@ const MediaPlayer = () => {
             background: calculateGradient(),
             overflow: isHovered ? 'visible' : 'hidden',
           }}
-          onChange={(e) => {
-            const newTime = parseFloat(e.target.value);
-            setCurrentAudioTime(newTime);
-            audioRef.current.currentTime = newTime;
-          }}
+          onChange={(e) => {handleChangeTime(e)}}
           onMouseOver={() => setIsHovered(true)}
           onMouseOut={() => setIsHovered(false)}
           className="w-[620px] transition-all"
