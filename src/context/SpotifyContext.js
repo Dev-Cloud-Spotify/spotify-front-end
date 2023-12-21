@@ -12,6 +12,8 @@ export const SpotifyProvider = ({ children }) => {
     const [tracks, setTracks] = useState(localStorage.getItem('playlist') ? JSON.parse(localStorage.getItem('playlist'))?.songs : []); 
     const [volume, setVolume] = useState(localStorage.getItem('volume') ? localStorage.getItem('volume') : 20);
     const [isPlaying, setIsPlaying] = useState(false);
+
+    const [isFullScreen, setIsFullScreen] = useState(false);
     
     useEffect(() => {
         if(!track) return;
@@ -36,6 +38,13 @@ export const SpotifyProvider = ({ children }) => {
         setTracks(playList?.songs)
     }, [playList]);
 
+    const toggleFullScreen = () => {
+        console.log('toggleFullScreen');
+        console.log('isFullScreen :', isFullScreen)
+        setIsFullScreen(!isFullScreen);
+        console.log('setIsFullScreen to :', !isFullScreen)
+      }
+
     return (
         <SpotifyContext.Provider
         value={{
@@ -50,6 +59,9 @@ export const SpotifyProvider = ({ children }) => {
             setPlayList,
             isPlaying,
             setIsPlaying,
+            isFullScreen,
+            setIsFullScreen,
+            toggleFullScreen
         }}
         >
         {children}
