@@ -61,6 +61,8 @@ const MediaPlayer = () => {
       console.log('Received changeIsPlaying:', data);
   
       setIsPlaying(data.isPlaying);
+      data.isPlaying ? audioRef.current.play() : audioRef.current.pause();
+
     });
     // Listen for play/start changes
     socketRef?.current.on('changeTime', (data) => {
@@ -82,7 +84,6 @@ const MediaPlayer = () => {
     if (socketRef?.current && track) {
       socketRef?.current.emit('changeIsPlaying', { isPlaying });
     }
-    isPlaying ? audioRef.current.play() : audioRef.current.pause();
   },[isPlaying]);
 
 
