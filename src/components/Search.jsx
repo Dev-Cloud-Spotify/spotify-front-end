@@ -4,8 +4,9 @@ import axios from 'axios';
 import songsAPI from '@/apis/songs.api';
 import SearchedSongCard from './SearchedSongCard';
 import Lottie from 'lottie-react';
-import LoadingSpotifyLottie from '../assets/lotties/loading-spotify.json';
+import LoadingSpotifyLottie from '../assets/lotties/Loading-spotify.json';
 import noResultLottie from '../assets/lotties/NoResult.json';
+
 const Search = () => {
   const [input, setInput] = useState('');
   const [data, setData] = useState([]);
