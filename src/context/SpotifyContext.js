@@ -6,11 +6,29 @@ export const SpotifyContext = createContext();
 
 export const SpotifyProvider = ({ children }) => {
     
-    const audioRef = useRef(new Audio());
-    const [playList, setPlayList] = useState(localStorage.getItem('playlist') ? JSON.parse(localStorage.getItem('playlist')) : null);
-    const [track, setTrack] = useState(localStorage.getItem('track') ? JSON.parse(localStorage.getItem('track')) : null);
-    const [tracks, setTracks] = useState(localStorage.getItem('playlist') ? JSON.parse(localStorage.getItem('playlist'))?.songs : []); 
-    const [volume, setVolume] = useState(localStorage.getItem('volume') ? localStorage.getItem('volume') : 20);
+    const audioRef = useRef(
+        typeof Audio !== "undefined" ? new Audio("") : undefined
+      );
+    const [playList, setPlayList] = useState(
+        typeof window !== 'undefined' && localStorage.getItem('playlist')
+            ? JSON.parse(localStorage.getItem('playlist'))
+            : null
+    );
+    const [track, setTrack] = useState(
+        typeof window !== 'undefined' && localStorage.getItem('track')
+            ? JSON.parse(localStorage.getItem('track'))
+            : null
+    );
+    const [tracks, setTracks] = useState(
+        typeof window !== 'undefined' && localStorage.getItem('playlist')
+            ? JSON.parse(localStorage.getItem('playlist'))?.songs
+            : []
+    );
+    const [volume, setVolume] = useState(
+        typeof window !== 'undefined' && localStorage.getItem('volume')
+            ? localStorage.getItem('volume')
+            : 20
+    );
     const [isPlaying, setIsPlaying] = useState(false);
 
     const [isFullScreen, setIsFullScreen] = useState(false);

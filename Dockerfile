@@ -10,12 +10,14 @@ COPY package-lock.json .
 
 # Install dependencies
 RUN npm install
+# RUN npm install -g npm@10.2.5
+# RUN npm run build
 
 # Copy the rest of the application code
 COPY . .
 
 # Expose the port the app runs on
-EXPOSE 4003
+EXPOSE 3000
 
 # Define the command to run your app
 CMD ["npm", "start"]
