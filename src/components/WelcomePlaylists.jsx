@@ -3,7 +3,6 @@ import songsAPI from '@/apis/songs.api';
 import { useSpotifyContext } from '@/context/SpotifyContext';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { FaPauseCircle, FaPlayCircle } from 'react-icons/fa';
 import { IconPlay } from './utils/Elements';
 
 const WelcomePlaylists = () => {
