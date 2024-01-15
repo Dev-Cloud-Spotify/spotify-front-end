@@ -46,7 +46,7 @@ const SideBarAlbums = ({ inputSearch }) => {
     return (
         <div className='h-[92%] overflow-auto'>
             {filteredAlbums.length === 0 && <div className='text-center h-full flex flex-col justify-center'>
-                <span className='text-2xl font-semibold'>Unable de find "{inputSearch}"</span>
+                <span className='text-2xl font-semibold'>Unable to find &quot;{inputSearch}&quot;</span>
                 <p className='text-gray'>Check spelling or use other keywords and try again</p>
             </div>}
             {filteredAlbums?.map((album)=> (

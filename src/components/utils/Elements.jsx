@@ -13,8 +13,6 @@ export const IconPlay = ({ playlist, size, playStyle, pauseStyle }) => {
 
     //handle select playlist
     const handleSelectPlaylist = async (e) => {
-        console.log('playlistID', playlist._id)
-        console.log('playList', playList._id)
         //prevent default behavior
         e.stopPropagation();
         //if playlist is already playing, play it

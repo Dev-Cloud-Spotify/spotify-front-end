@@ -61,7 +61,7 @@ const MediaPlayer = () => {
       console.log('Received changeIsPlaying:', data);
   
       setIsPlaying(data.isPlaying);
-      data.isPlaying ? audioRef.current.play() : audioRef.current.pause();
+      data.isPlaying ? audioRef.current?.play() : audioRef.current?.pause();
 
     });
     // Listen for play/start changes
@@ -105,12 +105,12 @@ const MediaPlayer = () => {
     audioRef.current.src = track.CFurl;
 
     // Load the new track
-    audioRef.current.load();
+    audioRef.current?.load();
 
     // If isPlaying was true, start playing the new track
     if (isPlaying) {
       setIsPlaying(true);
-      audioRef.current.play();
+      audioRef.current?.play();
     }
 
     // if(!shareListenning) return;
@@ -145,7 +145,7 @@ const MediaPlayer = () => {
     setSelectedTrackCFurl(tracks[nextIndex]?.CFurl);
     setTrack(tracks[nextIndex])
 
-    audioRef.current.load();
+    audioRef.current?.load();
     setIsPlaying(true)
   };
 
@@ -153,7 +153,7 @@ const MediaPlayer = () => {
   const handlePrevious = () => {
     setSongIsListenning(false)
     //replay track at start if already started
-    if(audioRef.current.currentTime >= 4) {
+    if(audioRef.current?.currentTime >= 4) {
       audioRef.current.currentTime = 0
       return;
     }
@@ -165,7 +165,7 @@ const MediaPlayer = () => {
     setSelectedTrackCFurl(tracks[previousIndex]?.CFurl);
     setTrack(tracks[previousIndex])
     
-    audioRef.current.load();
+    audioRef.current?.load();
     setIsPlaying(true)
 
   };
@@ -174,7 +174,7 @@ const MediaPlayer = () => {
   useEffect(() => {
 
     const handleTimeUpdate = () => {
-      setCurrentAudioTime(audioRef.current.currentTime);
+      setCurrentAudioTime(audioRef.current?.currentTime);
     };
     const intervalId = setInterval(() => {
       handleTimeUpdate();
@@ -206,13 +206,13 @@ const MediaPlayer = () => {
   useEffect(() => {
     const audio = audioRef.current;
     if (isPlaying) {
-      audioRef.current.play();
+      audioRef.current?.play();
       document.title = track?.title;
     } else {
-      audioRef.current.pause();
+      audioRef.current?.pause();
     }
 
-    if (isPlaying && audioRef.current.currentTime >= audio.duration-1) {
+    if (isPlaying && audioRef.current?.currentTime >= audio.duration-1) {
       console.log('end of track')
       // setCurrentAudioTime(0);
       if (isLooping) {
@@ -235,7 +235,7 @@ const MediaPlayer = () => {
 
     
 
-  }, [isPlaying, audioRef.current.currentTime]);
+  }, [isPlaying, audioRef.current?.currentTime]);
 
   //display time in minutes and seconds
   const formatTime = (timeInSeconds) => {
@@ -278,10 +278,10 @@ const MediaPlayer = () => {
 
   //handle track bar gradient
   const calculateGradient = () => {
-    const formattedTime = formatTime(audioRef.current.currentTime);
+    const formattedTime = formatTime(audioRef.current?.currentTime);
     const [minutes, seconds] = formattedTime.split(':');
     const timeInSeconds = parseInt(minutes, 10) * 60 + parseInt(seconds, 10);
-    const percentage = (timeInSeconds / audioRef.current.duration) * 100 || 0;
+    const percentage = (timeInSeconds / audioRef.current?.duration) * 100 || 0;
 
     return `linear-gradient(to right, ${isHovered ? '#1db954' : '#fff'} 0%, ${
       isHovered ? '#1db954' : '#fff'
@@ -310,12 +310,12 @@ const MediaPlayer = () => {
       </div>
 
       <div className="flex justify-center gap-2 items-center">
-        <span className="text-xs text[#a7a7a7]">{formatTime(audioRef.current.currentTime)}</span>
+        <span className="text-xs text[#a7a7a7]">{formatTime(audioRef.current?.currentTime)}</span>
         <input
           type="range"
-          value={audioRef.current.currentTime}
+          value={audioRef.current?.currentTime}
           min="0"
-          max={audioRef.current.duration || track?.duration}
+          max={audioRef.current?.duration || track?.duration}
           style={{
             background: calculateGradient(),
             overflow: isHovered ? 'visible' : 'hidden',
@@ -325,7 +325,7 @@ const MediaPlayer = () => {
           onMouseOut={() => setIsHovered(false)}
           className="w-[620px] transition-all"
         />
-        <span className="text-xs text[#a7a7a7]">{formatTime(audioRef.current.duration || track?.duration) }</span>
+        <span className="text-xs text[#a7a7a7]">{formatTime(audioRef.current?.duration || track?.duration) }</span>
       </div>
     </div>
 
