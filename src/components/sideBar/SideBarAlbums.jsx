@@ -1,6 +1,8 @@
 import albumsAPI from '@/apis/albums.api';
+import { useSpotifyContext } from '@/context/SpotifyContext';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { BiSolidVolumeFull } from 'react-icons/bi';
 
 
 const SideBarAlbums = ({ inputSearch }) => {
@@ -37,10 +39,7 @@ const SideBarAlbums = ({ inputSearch }) => {
         }
     }, [inputSearch, albums]);
 
-    const handleSelectAlbum = (album) => {
-        setSelectedAlbum(album._id)
-        router.push(`/album/${album._id}`)
-    };
+    
         
 
     return (
@@ -50,17 +49,49 @@ const SideBarAlbums = ({ inputSearch }) => {
                 <p className='text-gray'>Check spelling or use other keywords and try again</p>
             </div>}
             {filteredAlbums?.map((album)=> (
-                <div key={album._id} className='items-center flex gap-2 rounded-md p-2 hover:bg-[#1a1a1a] cursor-pointer' onClick={() =>handleSelectAlbum(album)}>
-                    <img src={album.coverImage}
-                    className='w-12 h-12 object-cover rounded-md' alt="" />
-                    <div className='flex flex-col'>
-                       <span className='font-semibold line-clamp-1'>{album.title}</span> 
-                       <span className='flex items-center gap-1 text-gray line-clamp-1'>{album.artist?.name} {album.artist?.lastName}</span> 
-                    </div>
-                </div>
+                <AlbumItem key={album._id} album={album} selectedAlbum={selectedAlbum} setSelectedAlbum={setSelectedAlbum} />
             ))}
         </div>
     );
 }
+
+const AlbumItem = ({ album, selectedAlbum, setSelectedAlbum }) => {
+    
+        const router = useRouter();
+        const { playList, isPlaying } = useSpotifyContext();
+    
+        const coverImage = () => {
+            if(album.title == 'Liked Songs') return (
+                <img src="https://i1.sndcdn.com/artworks-y6qitUuZoS6y8LQo-5s2pPA-t500x500.jpg" 
+                className='w-12 h-12 object-cover rounded-md' alt="" />
+            )
+            if(album.coverImage) return (
+                <img src={album.coverImage} className='w-12 h-12 object-cover rounded-md' alt="" />
+            )
+            return (
+                <div className='w-12 h-12 rounded-md bg-gray-700 flex items-center justify-center'>
+                    <BiSolidVolumeFull className='text-white text-2xl' />
+                </div>
+            )
+        }
+
+        const handleSelectAlbum = (album) => {
+            setSelectedAlbum(album._id)
+            router.push(`/album/${album._id}`)
+        };
+    
+        return (
+            <div className={`flex items-center justify-between p-2 rounded-md cursor-pointer ${selectedAlbum === album._id ? 'bg-gray-700' : ''}`} onClick={() => handleSelectAlbum(album)}>
+                <div className='flex gap-2'>
+                    {coverImage()}
+                    <div className='ml-3 flex flex-col'>
+                        <span className={`${playList?._id === album._id && 'text-primary'} line-clamp-1 font-semibold`}>{album.title}</span>
+                        <span className='text-xs text-gray-400'>{album.artist?.name} {album.artist?.lastName}</span>
+                    </div>
+                </div>
+                {playList?._id === album._id && isPlaying && <BiSolidVolumeFull size={18} className='text-primary' /> }
+            </div>
+        );
+    }
 
 export default SideBarAlbums;
