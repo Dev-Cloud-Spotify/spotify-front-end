@@ -10,7 +10,7 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     // Connect to the WebSocket server
-    socketRef.current = io('http://localhost:3000'); 
+    socketRef.current = io('http://spotify-back-api.thomas-jan.fr:3040'); 
     console.log('socketRef', socketRef)
     // Clean up the socket connection when the component unmounts
     return () => {
