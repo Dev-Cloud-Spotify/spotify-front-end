@@ -3,6 +3,7 @@ import { useSpotifyContext } from '@/context/SpotifyContext';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { FaCircle } from 'react-icons/fa';
+import { BiSolidVolumeFull } from "react-icons/bi";
 
 const SideBarPlayLists = ({ inputSearch }) => {
     const [playlists, setPlaylists] = useState([]);
@@ -50,7 +51,7 @@ const SideBarPlayLists = ({ inputSearch }) => {
 const PlaylistItem = ({ playlist, selectedPlaylist, setSelectedPlaylist }) => {
 
     const router = useRouter();
-    const { playList } = useSpotifyContext();
+    const { playList, isPlaying } = useSpotifyContext();
 
     const coverImage = () => {
         if(playlist.title == 'Liked Songs') return (
@@ -82,12 +83,15 @@ const PlaylistItem = ({ playlist, selectedPlaylist, setSelectedPlaylist }) => {
     }
 
     return (
-        <div className={`items-center flex gap-2 rounded-md p-2  cursor-pointer ${selectedPlaylist === playlist._id ? 'bg-[#1a1a1a] hover:bg-[#393939]' : 'hover:bg-[#1a1a1a]'}`} onClick={handleSelectPlaylist}>
-            {coverImage()}
-            <div className='flex flex-col'>
-               <span className={`${playList?._id === playlist._id && 'text-primary'} line-clamp-1`}>{playlist.title}</span> 
-               <span className='flex items-center gap-1 text-gray line-clamp-1'> playlist <FaCircle size={8}/> {playlist.title}</span> 
+        <div className={`items-center flex justify-between rounded-md p-2 cursor-pointer ${selectedPlaylist === playlist._id ? 'bg-[#1a1a1a] hover:bg-[#393939]' : 'hover:bg-[#1a1a1a]'}`} onClick={handleSelectPlaylist}>
+            <div className='flex gap-2'>
+                {coverImage()}
+                <div className='flex flex-col'>
+                <span className={`${playList?._id === playlist._id && 'text-primary'} line-clamp-1`}>{playlist.title}</span> 
+                <span className='flex items-center gap-1 text-gray line-clamp-1'> playlist <FaCircle size={8}/> {playlist.title}</span> 
+                </div>
             </div>
+            {playList?._id === playlist._id && isPlaying && <BiSolidVolumeFull size={18} className='text-primary' /> }
         </div>
     )
 };
